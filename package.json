@@ -1,0 +1,16 @@
+{
+  "name": "cyntelli-sdk-js",
+  "version": "1.0.0",
+  "description": "This JavaScript SDK library was forked from [rudderlabs/rudder-sdk-js](https://github.com/rudderlabs/rudder-sdk-js) and added Amobee and adgeek.net to start send data from website of clients into Cyntelli DMP.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.cyntellitech.org/eric.huang/cyntelli-sdk-js.git"
+  },
+  "keywords": ["Cyntelli", "SDK", "JavaScript", "Tracking", "DMP", "Cookie", "Website", "rudder-sdk-js"],
+  "author": "",
+  "license": "ISC"
+}
