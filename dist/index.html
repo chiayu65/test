@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Cyntelli SDK JS Test</title>
+</head>
+<body>
+<p>Hi...</p>
+<script>
+    ctanalytics = window.ctanalytics = [];
+
+    var  methods = [
+        "load",
+        "page",
+        "track",
+        "identify",
+        "alias",
+        "group",
+        "ready",
+        "reset",
+        "getAnonymousId",
+        "setAnonymousId"
+    ];
+
+    for (var i = 0; i < methods.length; i++) {
+        var method = methods[i];
+        ctanalytics[method] = function (methodName) {
+                return function () {
+                    ctanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
+                };
+            }(method);
+    }
+    // ctanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
+    //For example,
+    ctanalytics.load("1Qb1F3jSWv0eKFBPZcrM7ypgjVo", "http://localhost:8080");
+    ctanalytics.page();
+</script>
+
+<script async="true" src="https://dev-master.adgeek.net/eric/cyntelli-sdk-js/sdk.js"></script>
+</body>
+</html>
