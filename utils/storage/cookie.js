@@ -26,18 +26,19 @@ class CookieLocal {
 
     // the default maxage and path
     this._options = defaults(options, {
-      maxage: 31536000000,
+      maxage: 63072000000, // two years
       path: "/",
       domain,
-      samesite: "Lax",
+      // samesite: "Lax",
+      // secure: true
     });
 
     // try setting a cookie first
-    this.set("test_rudder", true);
-    if (!this.get("test_rudder")) {
+    this.set("test_cyntelli", true);
+    if (!this.get("test_cyntelli")) {
       this._options.domain = null;
     }
-    this.remove("test_rudder");
+    this.remove("test_cyntelli");
   }
 
   /**

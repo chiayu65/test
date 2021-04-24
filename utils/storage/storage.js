@@ -1,17 +1,14 @@
-import AES from "crypto-js/aes";
-import Utf8 from "crypto-js/enc-utf8";
 import logger from "../logUtil";
 import { Cookie } from "./cookie";
 import { Store } from "./store";
 
 const defaults = {
-  user_storage_key: "rl_user_id",
-  user_storage_trait: "rl_trait",
-  user_storage_anonymousId: "rl_anonymous_id",
-  group_storage_key: "rl_group_id",
-  group_storage_trait: "rl_group_trait",
-  prefix: "RudderEncrypt:",
-  key: "Rudder",
+  user_storage_key: "_ctgcid",
+  user_storage_trait: "_ctgtt",
+  user_storage_old_anonymousId: '_uid',
+  user_storage_anonymousId: "_ctguid",
+  group_storage_key: "_ctggid",
+  group_storage_trait: "_ctggtt",
 };
 
 /**
@@ -20,10 +17,10 @@ const defaults = {
 class Storage {
   constructor() {
     // First try setting the storage to cookie else to localstorage
-    Cookie.set("rudder_cookies", true);
+    Cookie.set("adg_cookies", true);
 
-    if (Cookie.get("rudder_cookies")) {
-      Cookie.remove("rudder_cookies");
+    if (Cookie.get("adg_cookies")) {
+      Cookie.remove("adg_cookies");
       this.storage = Cookie;
       return;
     }
@@ -65,45 +62,12 @@ class Storage {
   }
 
   /**
-   * AES encrypt value with constant prefix
-   * @param {*} value
-   */
-  encryptValue(value) {
-    if (this.trim(value) == "") {
-      return value;
-    }
-    const prefixedVal = `${defaults.prefix}${AES.encrypt(
-      value,
-      defaults.key
-    ).toString()}`;
-
-    return prefixedVal;
-  }
-
-  /**
-   * decrypt value
-   * @param {*} value
-   */
-  decryptValue(value) {
-    if (!value || (typeof value === "string" && this.trim(value) == "")) {
-      return value;
-    }
-    if (value.substring(0, defaults.prefix.length) == defaults.prefix) {
-      return AES.decrypt(
-        value.substring(defaults.prefix.length),
-        defaults.key
-      ).toString(Utf8);
-    }
-    return value;
-  }
-
-  /**
    *
    * @param {*} key
    * @param {*} value
    */
   setItem(key, value) {
-    this.storage.set(key, this.encryptValue(this.stringify(value)));
+    this.storage.set(key, this.stringify(value));
   }
 
   /**
@@ -117,7 +81,7 @@ class Storage {
     }
     this.storage.set(
       defaults.user_storage_key,
-      this.encryptValue(this.stringify(value))
+      this.stringify(value)
     );
   }
 
@@ -128,7 +92,7 @@ class Storage {
   setUserTraits(value) {
     this.storage.set(
       defaults.user_storage_trait,
-      this.encryptValue(this.stringify(value))
+      this.stringify(value)
     );
   }
 
@@ -143,7 +107,7 @@ class Storage {
     }
     this.storage.set(
       defaults.group_storage_key,
-      this.encryptValue(this.stringify(value))
+      this.stringify(value)
     );
   }
 
@@ -154,7 +118,7 @@ class Storage {
   setGroupTraits(value) {
     this.storage.set(
       defaults.group_storage_trait,
-      this.encryptValue(this.stringify(value))
+      this.stringify(value)
     );
   }
 
@@ -169,7 +133,7 @@ class Storage {
     }
     this.storage.set(
       defaults.user_storage_anonymousId,
-      this.encryptValue(this.stringify(value))
+      value
     );
   }
 
@@ -178,7 +142,7 @@ class Storage {
    * @param {*} key
    */
   getItem(key) {
-    return this.parse(this.decryptValue(this.storage.get(key)));
+    return this.parse(this.storage.get(key));
   }
 
   /**
@@ -186,7 +150,7 @@ class Storage {
    */
   getUserId() {
     return this.parse(
-      this.decryptValue(this.storage.get(defaults.user_storage_key))
+      this.storage.get(defaults.user_storage_key)
     );
   }
 
@@ -195,7 +159,7 @@ class Storage {
    */
   getUserTraits() {
     return this.parse(
-      this.decryptValue(this.storage.get(defaults.user_storage_trait))
+      this.storage.get(defaults.user_storage_trait)
     );
   }
 
@@ -204,7 +168,7 @@ class Storage {
    */
   getGroupId() {
     return this.parse(
-      this.decryptValue(this.storage.get(defaults.group_storage_key))
+      this.storage.get(defaults.group_storage_key)
     );
   }
 
@@ -213,7 +177,7 @@ class Storage {
    */
   getGroupTraits() {
     return this.parse(
-      this.decryptValue(this.storage.get(defaults.group_storage_trait))
+      this.storage.get(defaults.group_storage_trait)
     );
   }
 
@@ -221,9 +185,11 @@ class Storage {
    * get stored anonymous id
    */
   getAnonymousId() {
-    return this.parse(
-      this.decryptValue(this.storage.get(defaults.user_storage_anonymousId))
-    );
+    const origUid = this.storage.get(defaults.user_storage_old_anonymousId);
+    if (/^[a-z0-9]{32}$/.test(origUid))
+      this.setAnonymousId(origUid);
+
+    return this.storage.get(defaults.user_storage_anonymousId);
   }
 
   /**

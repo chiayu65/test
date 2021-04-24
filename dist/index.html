@@ -7,7 +7,7 @@
 <body>
 <p>Hi...</p>
 <script>
-    ctanalytics = window.ctanalytics = [];
+    cyntellianalytics = window.cyntellianalytics = [];
 
     var  methods = [
         "load",
@@ -24,18 +24,22 @@
 
     for (var i = 0; i < methods.length; i++) {
         var method = methods[i];
-        ctanalytics[method] = function (methodName) {
+        cyntellianalytics[method] = function (methodName) {
                 return function () {
-                    ctanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
+                    cyntellianalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
                 };
             }(method);
     }
-    // ctanalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
+    // cyntellianalytics.load(YOUR_WRITE_KEY, DATA_PLANE_URL);
     //For example,
-    ctanalytics.load("1Qb1F3jSWv0eKFBPZcrM7ypgjVo", "http://localhost:8080");
-    ctanalytics.page();
+    cyntellianalytics.page();
+    cyntellianalytics.page();
+    cyntellianalytics.load("4c94b218-51cc-4997-b8cb-fba89fd4ca4b");
+    cyntellianalytics.page();
+
+    console.log(cyntellianalytics);
 </script>
 
-<script async="true" src="https://dev-master.adgeek.net/eric/cyntelli-sdk-js/sdk.js"></script>
+<script async="true" src="https://dev-master.adgeek.net/eric/cyntelli-sdk-js/analytics.js"></script>
 </body>
 </html>

@@ -2,10 +2,10 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './index.js',
+  entry: './analytics.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'sdk.js',
+    filename: 'analytics.js',
     library: 'cyntelli-sdk-js',
     libraryTarget: 'umd',
   },

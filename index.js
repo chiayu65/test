@@ -1155,14 +1155,18 @@ instance.initializeCallbacks();
 // register supported callbacks
 instance.registerCallbacks(false);
 const eventsPushedAlready =
-  !!window.cyanalytics &&
-  window.cyanalytics.push == Array.prototype.push;
+  !!window.cyntellianalytics &&
+  window.cyntellianalytics.push == Array.prototype.push;
 
-const argumentsArray = window.cyanalytics;
+// exchange to internal variable
+const argumentsArray = window.cyntellianalytics;
 
+// check initial start from load
 while (argumentsArray && argumentsArray[0] && argumentsArray[0][0] !== "load") {
   argumentsArray.shift();
 }
+
+// run load and shift this task
 if (
   argumentsArray &&
   argumentsArray.length > 0 &&
@@ -1180,6 +1184,7 @@ const parsedQueryObject = instance.parseQueryString(window.location.search);
 
 pushQueryStringDataToAnalyticsArray(parsedQueryObject);
 
+// process the others tasks
 if (argumentsArray && argumentsArray.length > 0) {
   for (let i = 0; i < argumentsArray.length; i++) {
     instance.toBeProcessedArray.push(argumentsArray[i]);
