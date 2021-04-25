@@ -97,12 +97,26 @@ class Analytics {
 
     this.anonymousId = this.getAnonymousId();
 
+    this.anonymousTraits =
+      this.storage.getAnonymousTraits() != undefined
+        ? this.storage.getAnonymousTraits()
+        : {};
+
+    // get ga id
+    this.gaId = this.storage.getGa();
+
+    // get fbp, fbc id
+    this.fbp = this.storage.getFbp();
+    this.fbc = this.storage.getFbc();
+
     // save once for storing older values to encrypted
     this.storage.setUserId(this.userId);
     this.storage.setAnonymousId(this.anonymousId);
+    this.storage.setAnonymousTraits(this.anonymousTraits);
     this.storage.setGroupId(this.groupId);
     this.storage.setUserTraits(this.userTraits);
     this.storage.setGroupTraits(this.groupTraits);
+    console.log(this.storage.getIdentities());
   }
 
   /**
@@ -213,6 +227,13 @@ class Analytics {
     this.anonymousId = anonymousId || parsedAnonymousId || generateUUID();
     this.storage.setAnonymousId(this.anonymousId);
   }
+
+  /**
+   * get identity
+   */
+  getIdentities() {
+    return this.storage.getIdentities()
+  }
 }
 
 // new instance
@@ -284,16 +305,12 @@ if (eventsPushedAlready) {
 // }
 
 const ready = instance.ready.bind(instance);
-const identify = instance.identify.bind(instance);
 const page = instance.page.bind(instance);
 const track = instance.track.bind(instance);
-const alias = instance.alias.bind(instance);
 const group = instance.group.bind(instance);
-const reset = instance.reset.bind(instance);
 const load = instance.load.bind(instance);
 const initialized = (instance.initialized = true);
 const getAnonymousId = instance.getAnonymousId.bind(instance);
-const setAnonymousId = instance.setAnonymousId.bind(instance);
 
 export {
   initialized,
@@ -301,10 +318,6 @@ export {
   page,
   track,
   load,
-  identify,
-  reset,
-  alias,
   group,
-  getAnonymousId,
-  setAnonymousId
+  getAnonymousId
 };

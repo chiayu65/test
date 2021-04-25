@@ -3,12 +3,16 @@ import { Cookie } from "./cookie";
 import { Store } from "./store";
 
 const defaults = {
-  user_storage_key: "_ctgcid",
-  user_storage_trait: "_ctgtt",
+  user_storage_key: "_cuserid",
+  user_storage_trait: "_cusertrait",
   user_storage_old_anonymousId: '_uid',
-  user_storage_anonymousId: "_ctguid",
-  group_storage_key: "_ctggid",
-  group_storage_trait: "_ctggtt",
+  user_storage_anonymousId: "_cuid",
+  user_storage_anonymous_trait: "_ctrait",
+  group_storage_key: "_cgrpid",
+  group_storage_trait: "_cgrptrait",
+  user_storage_ga: '_ga',
+  user_storage_fbp: '_fbp',
+  user_storage_fbp: '_fbc',
 };
 
 /**
@@ -63,15 +67,6 @@ class Storage {
 
   /**
    *
-   * @param {*} key
-   * @param {*} value
-   */
-  setItem(key, value) {
-    this.storage.set(key, this.stringify(value));
-  }
-
-  /**
-   *
    * @param {*} value
    */
   setUserId(value) {
@@ -81,7 +76,7 @@ class Storage {
     }
     this.storage.set(
       defaults.user_storage_key,
-      this.stringify(value)
+      this.trim(value)
     );
   }
 
@@ -107,7 +102,7 @@ class Storage {
     }
     this.storage.set(
       defaults.group_storage_key,
-      this.stringify(value)
+      this.trim(value)
     );
   }
 
@@ -133,25 +128,26 @@ class Storage {
     }
     this.storage.set(
       defaults.user_storage_anonymousId,
-      value
+      this.trim(value)
     );
   }
 
   /**
    *
-   * @param {*} key
+   * @param {*} value
    */
-  getItem(key) {
-    return this.parse(this.storage.get(key));
+  setAnonymousTraits(value) {
+    this.storage.set(
+      defaults.user_storage_anonymous_trait,
+      this.stringify(value)
+    );
   }
 
   /**
    * get the stored userId
    */
   getUserId() {
-    return this.parse(
-      this.storage.get(defaults.user_storage_key)
-    );
+    return this.storage.get(defaults.user_storage_key);
   }
 
   /**
@@ -167,9 +163,7 @@ class Storage {
    * get the stored userId
    */
   getGroupId() {
-    return this.parse(
-      this.storage.get(defaults.group_storage_key)
-    );
+    return this.storage.get(defaults.group_storage_key);
   }
 
   /**
@@ -193,22 +187,58 @@ class Storage {
   }
 
   /**
+   * get anonymous traits
+   */
+  getAnonymousTraits() {
+    return this.parse(
+      this.storage.get(defaults.user_storage_anonymous_trait)
+    );
+  }
+
+  /**
+   * get stored google analytics id
+   */
+  getGa() {
+    return this.storage.get(defaults.user_storage_ga);
+  }
+
+  /**
+   * get stored facebook screen id
+   */
+  getFbp() {
+    return this.storage.get(defaults.user_storage_fbp);
+  }
+
+  /**
+   * get stored facebook click id
+   */
+  getFbc() {
+    return this.storage.get(defaults.user_storage_fbc);
+  }
+
+  /**
+   * get identities
+   */
+  getIdentities() {
+    return {
+      user_id: this.getUserId(),
+      user_traits: this.getUserTraits(),
+      uid: this.getAnonymousId(),
+      traits: this.getAnonymousTraits(),
+      group_id: this.getGroupId(),
+      group_traits: this.getGroupTraits(),
+      ga: this.getGa(),
+      fbp: this.getFbp(),
+      fbp: this.getFbc()
+    }
+  }
+
+  /**
    *
    * @param {*} key
    */
   removeItem(key) {
     return this.storage.remove(key);
-  }
-
-  /**
-   * remove stored keys
-   */
-  clear() {
-    this.storage.remove(defaults.user_storage_key);
-    this.storage.remove(defaults.user_storage_trait);
-    this.storage.remove(defaults.group_storage_key);
-    this.storage.remove(defaults.group_storage_trait);
-    // this.storage.remove(defaults.user_storage_anonymousId);
   }
 }
 
