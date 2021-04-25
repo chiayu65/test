@@ -225,8 +225,6 @@ class Storage {
       user_traits: this.getUserTraits(),
       uid: this.getAnonymousId(),
       traits: this.getAnonymousTraits(),
-      group_id: this.getGroupId(),
-      group_traits: this.getGroupTraits(),
       ga: this.getGa(),
       fbp: this.getFbp(),
       fbp: this.getFbc()

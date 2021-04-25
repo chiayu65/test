@@ -116,7 +116,6 @@ class Analytics {
     this.storage.setGroupId(this.groupId);
     this.storage.setUserTraits(this.userTraits);
     this.storage.setGroupTraits(this.groupTraits);
-    console.log(this.storage.getIdentities());
   }
 
   /**
@@ -163,16 +162,17 @@ class Analytics {
     logger.debug("inside track");
   }
 
-  identify() {
+  identify(userId, userTraits) {
     logger.debug("inside identify");
+    if (userId)
+      this.storage.setUserId(userId);
+
+    if (userTraits)
+      this.storage.setUserTraits(userTraits);
   }
 
   alias() {
     logger.debug("inside alias");
-  }
-
-  group() {
-    logger.debug("inside group");
   }
 
   ready() {
@@ -307,7 +307,7 @@ if (eventsPushedAlready) {
 const ready = instance.ready.bind(instance);
 const page = instance.page.bind(instance);
 const track = instance.track.bind(instance);
-const group = instance.group.bind(instance);
+const identify = instance.identify.bind(instance);
 const load = instance.load.bind(instance);
 const initialized = (instance.initialized = true);
 const getAnonymousId = instance.getAnonymousId.bind(instance);
@@ -318,6 +318,6 @@ export {
   page,
   track,
   load,
-  group,
+  identify,
   getAnonymousId
 };
