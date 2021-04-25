@@ -71,6 +71,7 @@ class Analytics {
     this.toBeProcessedArray = [];
     this.loaded = false;
     this.storage = Storage;
+    this.integrtions = Integrtions;
     console.log('aid', this.getAnonymousId());
     // console.log(generateUUID());
   }
@@ -111,10 +112,10 @@ class Analytics {
 
     // save once for storing older values to encrypted
     this.storage.setUserId(this.userId);
+    this.storage.setUserTraits(this.userTraits);
     this.storage.setAnonymousId(this.anonymousId);
     this.storage.setAnonymousTraits(this.anonymousTraits);
     this.storage.setGroupId(this.groupId);
-    this.storage.setUserTraits(this.userTraits);
     this.storage.setGroupTraits(this.groupTraits);
   }
 
@@ -147,8 +148,10 @@ class Analytics {
     // load integrtion
     var integrations = [
       {t: 'Fb', pid: '123123'},
-      {t: 'CyntelliDMP', pvId: 1, pId: 1}
+      {t: 'Cyntelli', pvId: 1, pId: 1}
     ];
+
+
 
     // process again new push elements
     processDataInAnalyticsArray(this);
