@@ -10,8 +10,14 @@ import {
   transformToServerNames,
   checkReservedKeywords
 } from "./utils/utils";
+import {
+  CONFIG_URL,
+  MAX_WAIT_FOR_INTEGRATION_LOAD,
+  INTEGRATION_LOAD_CHECK_INTERVAL
+} from "./utils/constants";
 import Emitter from "component-emitter";
 import Storage from "./utils/storage";
+import { integrations } from "./integrations";
 // import logger from "./utils/logUtil";
 
 /**
@@ -56,7 +62,9 @@ function processDataInAnalyticsArray(analytics) {
   }
 }
 
-var logger = {debug: function(data){console.log(data)}};
+var logger = {debug: function(data){console.log(data)}, error: function(){console.log.apply(this, arguments)}};
+
+console.log(integrations);
 
 /**
  * class responsible for handling core
@@ -71,7 +79,9 @@ class Analytics {
     this.toBeProcessedArray = [];
     this.loaded = false;
     this.storage = Storage;
-    this.integrtions = Integrtions;
+    this.integrations = [];
+    this.failedToBeLoadedIntegration = [];
+    this.successfullyLoadedIntegration = [];
     console.log('aid', this.getAnonymousId());
     // console.log(generateUUID());
   }
@@ -146,15 +156,89 @@ class Analytics {
     // fetch config
 
     // load integrtion
-    var integrations = [
-      {t: 'Fb', pid: '123123'},
-      {t: 'Cyntelli', pvId: 1, pId: 1}
+    const intgArray = [
+      {name: 'CYNTELLI_PIXEL', config: {pvId: 1, pId:1}},
+      {name: 'FACEBOOK_PIXEL', config: {pixelId: '137401291692595'}}
     ];
-
+    this.initIntegrations(intgArray);
 
 
     // process again new push elements
     processDataInAnalyticsArray(this);
+
+    console.log(this);
+  }
+
+  /**
+   * Initialize all integrtions
+   */
+  initIntegrations(intgArray) {
+    logger.debug("init integrtions");
+
+    const self = this;
+    if (intgArray.length == 0) {
+      return;
+    }
+
+    let intgInstance;
+    intgArray.forEach(intg => {
+      try {
+        logger.debug(
+          "[Analytics] init :: trying to initialize integration name:: " + intg.name
+        );
+        const intgClass = integrations[intg.name];
+        const destConfig = intg.config;
+        intgInstance = new intgClass(destConfig, self);
+        intgInstance.init();
+
+        logger.debug("initializing destination: ", intg);
+        console.log(intg, intgInstance);
+
+        this.isInitialized(intgInstance).then(this.replayEvents);
+      } catch (e) {
+        logger.error(
+          "[Analytics] initialize integration (integration.init()) failed :: ",
+          intg.name
+        );
+        this.failedToBeLoadedIntegration.push(intgInstance);
+      }
+    })
+  }
+
+  replayEvents(object) {
+
+  }
+
+  pause(time) {
+    return new Promise(resolve => {
+      setTimeout(resolve, time);
+    });
+  }
+
+  /**
+   * prepare promise for particular instance
+   */
+  isInitialized(instance, time = 0) {
+    return new Promise(resolve => {
+      if (instance.isLoaded()) {
+        logger.debug("===integration loaded successfully====", instance.name);
+        this.successfullyLoadedIntegration.push(instance);
+        return resolve(this);
+      }
+      if (time >= MAX_WAIT_FOR_INTEGRATION_LOAD) {
+        logger.debug("====max wait over====");
+        this.failedToBeLoadedIntegration.push(instance);
+        return resolve(this);
+      }
+
+      this.pause(INTEGRATION_LOAD_CHECK_INTERVAL).then(() => {
+        logger.debug("====after pause, again checking====");
+        return this.isInitialized(
+          instance,
+          time + INTEGRATION_LOAD_CHECK_INTERVAL
+        ).then(resolve);
+      });
+    });
   }
 
   page() {
