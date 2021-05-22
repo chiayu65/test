@@ -1101,6 +1101,8 @@ class Analytics {
 }
 
 function pushQueryStringDataToAnalyticsArray(obj) {
+  alert('123');
+  console.log(obj, 'obj');
   if (obj.anonymousId) {
     if (obj.userId) {
       instance.toBeProcessedArray.push(
@@ -1181,6 +1183,7 @@ if (
 
 // once loaded, parse querystring of the page url to send events
 const parsedQueryObject = instance.parseQueryString(window.location.search);
+console.log(parsedQueryObject);
 
 pushQueryStringDataToAnalyticsArray(parsedQueryObject);
 

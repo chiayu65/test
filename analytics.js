@@ -19,6 +19,7 @@ import Emitter from "component-emitter";
 import Storage from "./utils/storage";
 import { integrations } from "./integrations";
 // import logger from "./utils/logUtil";
+import CyntelliElementBuilder from "./utils/CyntelliElementBuilder";
 
 /**
  * consts
@@ -82,8 +83,6 @@ class Analytics {
     this.integrations = [];
     this.failedToBeLoadedIntegration = [];
     this.successfullyLoadedIntegration = [];
-    console.log('aid', this.getAnonymousId());
-    // console.log(generateUUID());
   }
 
   /**
@@ -157,7 +156,7 @@ class Analytics {
 
     // load integrtion
     const intgArray = [
-      {name: 'CYNTELLI_PIXEL', config: {pvId: 1, pId:1}},
+      {name: 'CYNTELLI_PIXEL', config: {pvId: 0, pId:0}},
       {name: 'FACEBOOK_PIXEL', config: {pixelId: '137401291692595'}}
     ];
     this.initIntegrations(intgArray);
@@ -165,8 +164,6 @@ class Analytics {
 
     // process again new push elements
     processDataInAnalyticsArray(this);
-
-    console.log(this);
   }
 
   /**
@@ -241,8 +238,41 @@ class Analytics {
     });
   }
 
-  page() {
+  page(category, name, properties, options, callback) {
     logger.debug("inside page");
+    if (!this.loaded)
+      return;
+
+    if (typeof options === "function")
+      (callback = options), (options = null);
+
+    if (typeof properties === "function")
+      (callback = properties), (options = properties = null);
+
+    if (typeof name === "function")
+      (callback = name), (options = properties = name = null);
+
+
+    if (
+      typeof category === "object" &&
+      category != null &&
+      category != undefined
+    )
+      (options = name), (properties = category), (name = category = null);
+
+    if (typeof name === "object" && name != null && name != undefined)
+      (options = properties), (properties = name), (name = null);
+
+    if (typeof category === "string" && typeof name !== "string")
+      (name = category), (category = null);
+
+    console.log(category, name, properties, options, callback);
+
+    // if (this.sendAdblockPage && category != "RudderJS-Initiated") {
+    //   this.sendSampleRequest();
+    // }
+
+    this.processPage(category, name, properties, options, callback);
   }
 
   track() {
@@ -320,6 +350,194 @@ class Analytics {
    */
   getIdentities() {
     return this.storage.getIdentities()
+  }
+
+  /**
+   * Send page call to Rudder BE and to initialized integrations
+   *
+   * @param {*} category
+   * @param {*} name
+   * @param {*} properties
+   * @param {*} options
+   * @param {*} callback
+   * @memberof Analytics
+   */
+  processPage(category, name, properties, options, callback) {
+    const rudderElement = new CyntelliElementBuilder().setType("page").build();
+
+    if (!properties) {
+      properties = {};
+    }
+    if (name) {
+      rudderElement.message.name = name;
+      properties.name = name;
+    }
+    if (category) {
+      rudderElement.message.category = category;
+      properties.category = category;
+    }
+    rudderElement.message.properties = this.getPageProperties(properties); // properties;
+    this.trackPage(rudderElement, options, callback);
+  }
+
+  /**
+   * Page call supporting ruddrElement from builder
+   *
+   * @param {*} rudderElement
+   * @param {*} callback
+   * @memberof Analytics
+   */
+  trackPage(rudderElement, options, callback) {
+    this.processAndSendDataToDestinations(
+      "page",
+      rudderElement,
+      options,
+      callback
+    );
+  }
+
+  /**
+   * process options parameter
+   * Apart from top level keys merge everyting under context
+   * context.page's default properties are overriden by same keys of
+   * provided properties in case of page call
+   *
+   * @param {*} rudderElement
+   * @param {*} options
+   * @memberof Analytics
+   */
+  processOptionsParam(rudderElement, options) {
+    const { type, properties } = rudderElement.message;
+
+    // this.addCampaignInfo(rudderElement);
+
+    // assign page properties to context.page
+    rudderElement.message.context.page =
+      type == "page"
+        ? this.getContextPageProperties(properties)
+        : this.getContextPageProperties();
+
+    const toplevelElements = [
+      "integrations",
+      "anonymousId",
+      "originalTimestamp"
+    ];
+    for (const key in options) {
+      if (toplevelElements.includes(key)) {
+        rudderElement.message[key] = options[key];
+      } else if (key !== "context") {
+        rudderElement.message.context = merge(rudderElement.message.context, {
+          [key]: options[key]
+        });
+      } else if (typeof options[key] === "object" && options[key] != null) {
+        rudderElement.message.context = merge(rudderElement.message.context, {
+          ...options[key]
+        });
+      } else {
+        logger.error(
+          "[Analytics: processOptionsParam] context passed in options is not object"
+        );
+      }
+    }
+  }
+
+  getPageProperties(properties, options) {
+    const defaultPageProperties = getDefaultPageProperties();
+    const optionPageProperties = options && options.page ? options.page : {};
+    for (const key in defaultPageProperties) {
+      if (properties[key] === undefined) {
+        properties[key] =
+          optionPageProperties[key] || defaultPageProperties[key];
+      }
+    }
+    return properties;
+  }
+
+  // Assign page properties to context.page if the same property is not provided under context.page
+  getContextPageProperties(properties) {
+    const defaultPageProperties = getDefaultPageProperties();
+    const contextPageProperties = {};
+    for (const key in defaultPageProperties) {
+      contextPageProperties[key] =
+        properties && properties[key]
+          ? properties[key]
+          : defaultPageProperties[key];
+    }
+    return contextPageProperties;
+  }
+
+  /**
+   * Process and send data to destinations along with rudder BE
+   *
+   * @param {*} type
+   * @param {*} rudderElement
+   * @param {*} callback
+   * @memberof Analytics
+   */
+  processAndSendDataToDestinations(type, rudderElement, options, callback) {
+    try {
+      if (!this.anonymousId) {
+        this.setAnonymousId();
+      }
+
+      // assign page properties to context
+      rudderElement.message.context.page = getDefaultPageProperties();
+      rudderElement.message.context.traits = {
+        ...this.userTraits
+      };
+
+      logger.debug("anonymousId: " + this.anonymousId);
+      rudderElement.message.anonymousId = this.anonymousId;
+      rudderElement.message.userId = rudderElement.message.userId
+        ? rudderElement.message.userId
+        : this.userId;
+      rudderElement.message.identities = this.removeEmptyName(this.getIdentities());
+      rudderElement.message.properties = this.removeEmptyName(rudderElement.message.properties);
+      console.log(rudderElement);
+
+      this.processOptionsParam(rudderElement, options);
+      logger.debug(JSON.stringify(rudderElement));
+
+      console.log(this.successfullyLoadedIntegration);
+      this.successfullyLoadedIntegration.forEach(function(integration){
+        integration[type](rudderElement);
+      });
+
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  /**
+   * remove name by empty value
+   */
+  removeEmptyName(props) {
+    let newProps = {};
+    console.log(typeof props, 'props');
+    if (typeof props !== 'object')
+      return props;
+
+    let type = null;
+    let valid = 0;
+    for(let name in props) {
+      type = typeof props[name];
+
+      if (type === 'object') {
+        let tmpProps = this.removeEmptyName(props[name]);
+        if (tmpProps)
+          newProps[name] = tmpProps;
+      } else if (type === 'string') {
+        if (props[name].trim().length > 0)
+          newProps[name] = props[name].trim();
+      } else if (type === 'undefined')
+        continue;
+      else
+        newProps[name] = props[name];
+
+      valid ++;
+    }
+
+    return (valid>0) ? newProps : null;
   }
 }
 

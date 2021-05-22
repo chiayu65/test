@@ -1,7 +1,7 @@
 import is from "is";
-import each from "@ndhoule/each";
 import ScriptLoader from "../ScriptLoader";
 import logger from "../../utils/logUtil";
+import querystring from "component-querystring";
 
 class CyntelliPixel {
   constructor(config) {
@@ -27,7 +27,15 @@ class CyntelliPixel {
   }
 
   page(rudderElement) {
-
+    console.log('Cyntelli send page event', rudderElement);
+    const msg = rudderElement.message;
+    const newProperties = this.buildParams('pi', msg.properties);
+    const newIds = this.buildParams('ids', msg.identities);
+    let data = {};
+    data['ev'] = 'PageView';
+    data = this.merge({ev: 'PageView'}, newProperties);
+    data = this.merge(data, newIds);
+    this.sendRequest(data);
   }
 
   identify(rudderElement) {
@@ -43,7 +51,14 @@ class CyntelliPixel {
   }
 
   merge(obj1, obj2) {
+    let obj = {};
+    for(let name in obj1)
+      obj[name] = obj1[name];
 
+    for(let name in obj2)
+      obj[name] = obj2[name];
+
+    return obj;
   }
 
   formatRevenue(revenue) {
@@ -52,6 +67,25 @@ class CyntelliPixel {
 
   buildPayLoad(rudderElement, isStandardEvent) {
 
+  }
+
+  buildParams(prefix, object) {
+    let params = {}
+    let key = null;
+    for(let name in object) {
+      key = prefix + '[' + name + ']';
+      params[key] = object[name];
+    }
+
+    return params;
+  }
+
+  sendRequest(data) {
+    console.log(data);
+    const url = 'https://r.adgeek.net/' + this.pvId + '/imp/' + this.pId + '?' + querystring.stringify(data);
+    let img = new Image;
+    img.src = url;
+    window.document.body.appendChild(img);
   }
 }
 
