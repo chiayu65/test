@@ -8,6 +8,7 @@ class CyntelliPixel {
     this.pvId = config.pvId;
     this.pId = config.pId;
     this.name = "CYNTELLI_PIXEL";
+    this.baseUri = 'https://r.adgeek.net';
     this.isIint = false;
   }
 
@@ -27,13 +28,12 @@ class CyntelliPixel {
   }
 
   page(rudderElement) {
-    console.log('Cyntelli send page event', rudderElement);
+    logger.debug('Cyntelli send page event');
     const msg = rudderElement.message;
     const newProperties = this.buildParams('pi', msg.properties);
-    const newIds = this.buildParams('ids', msg.identities);
-    let data = {};
-    data['ev'] = 'PageView';
-    data = this.merge({ev: 'PageView'}, newProperties);
+    const newIds = this.buildParams('i', msg.identities);
+    let data = null;
+    data = this.merge({ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId}, newProperties);
     data = this.merge(data, newIds);
     this.sendRequest(data);
   }
@@ -81,8 +81,8 @@ class CyntelliPixel {
   }
 
   sendRequest(data) {
-    console.log(data);
-    const url = 'https://r.adgeek.net/' + this.pvId + '/imp/' + this.pId + '?' + querystring.stringify(data);
+    logger.debug('Send Request by CyntelliPixel:', data);
+    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + querystring.stringify(data);
     let img = new Image;
     img.src = url;
     window.document.body.appendChild(img);

@@ -1101,8 +1101,6 @@ class Analytics {
 }
 
 function pushQueryStringDataToAnalyticsArray(obj) {
-  alert('123');
-  console.log(obj, 'obj');
   if (obj.anonymousId) {
     if (obj.userId) {
       instance.toBeProcessedArray.push(
