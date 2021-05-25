@@ -1,5 +1,5 @@
 // import * as XMLHttpRequestNode from "XMLHttpRequest";
-import XMLHttpRequest from "xmlhttprequest";
+// import XMLHttpRequest from "xmlhttprequest";
 import { parse } from "component-url";
 import logger from "./logUtil";
 import { commonNames } from "../integrations/integration_cname";
@@ -109,6 +109,37 @@ function getJSONTrimmed(context, url, writeKey, callback) {
     } else {
       handleError(
         new Error(`request failed with status: ${xhr.status} for url: ${url}`)
+      );
+      cb_(status);
+    }
+  };
+  xhr.send();
+}
+
+/**
+ *
+ * Utility function to retrieve configuration JSON from server
+ * @param {*} context
+ * @param {*} url
+ * @param {*} callback
+ */
+function getJSONConfig(context, url, clientId, callback) {
+  // server-side integration, XHR is node module
+  const cb_ = callback.bind(context);
+
+  const xhr = new XMLHttpRequest();
+
+  const uri = url + '/' + clientId;
+console.log(uri);
+  xhr.open("GET", uri, true);
+  xhr.onload = function () {
+    const { status } = xhr;
+    if (status == 200) {
+      logger.debug("status 200 " + "calling callback");
+      cb_(200, xhr.responseText);
+    } else {
+      handleError(
+        new Error(`request config failed with status: ${xhr.status} for url: ${url}`)
       );
       cb_(status);
     }
@@ -497,6 +528,7 @@ export {
   generateUUID,
   getCurrentTimeFormatted,
   getJSONTrimmed,
+  getJSONConfig,
   getJSON,
   getRevenue,
   getDefaultPageProperties,

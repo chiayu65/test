@@ -43,7 +43,8 @@ class CyntelliPixel {
   }
 
   track(rudderElement) {
-
+    console.log("Send track to " + this.name);
+    console.log(rudderElement);
   }
 
   getContentType(rudderElement, defaultValue) {

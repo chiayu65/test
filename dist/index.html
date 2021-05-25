@@ -22,6 +22,8 @@
         var method = methods[i];
         cyntellianalytics[method] = function (methodName) {
                 return function () {
+                    console.log(methodName, arguments);
+
                     cyntellianalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
                 };
             }(method);
@@ -30,8 +32,6 @@
     //For example,
     cyntellianalytics.load("4c94b218-51cc-4997-b8cb-fba89fd4ca4b");
     cyntellianalytics.page();
-
-    console.log(cyntellianalytics);
 </script>
 
 <script async="true" src="https://dev-master.adgeek.net/eric/cyntelli-sdk-js/analytics.js"></script>

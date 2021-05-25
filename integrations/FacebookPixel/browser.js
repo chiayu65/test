@@ -10,29 +10,7 @@ class FacebookPixel {
   }
 
   init() {
-    logger.debug("===in init FacebookPixel===");
-    // !function(f,b,e,v,n,t,s) {
-    //   if (f.fbq)
-    //     return;
-
-    //   n = f.fbq = function() {
-    //     n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
-    //   };
-
-    //   if(!f._fbq)
-    //     f._fbq = n;
-
-    //   n.push = n;
-    //   n.loaded = !0;
-    //   n.version = '2.0';
-    //   n.queue = [];
-    //   t = b.createElement(e);
-    //   t.async = !0;
-    //   t.src = v;
-    //   s = b.getElementsByTagName(e)[0];
-    //   s.parentNode.insertBefore(t,s)
-    // }(window, document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
-
+    console.log("===in init FacebookPixel===");
     window._fbq = function () {
       if (window.fbq.callMethod) {
         window.fbq.callMethod.apply(window.fbq, arguments);
@@ -58,19 +36,17 @@ class FacebookPixel {
   }
 
   isLoaded() {
-    // logger.debug("in FBPixel isLoaded");
     console.log("in FBPixel isLoaded");
     return !!(window.fbq && window.fbq.callMethod);
   }
 
   isReady() {
-    logger.debug("in FBPixel isReady");
+    console.log("in FBPixel isReady");
     return !!(window.fbq && window.fbq.callMethod);
   }
 
   page(rudderElement) {
-    // logger.debug('FACEBOOK send page event');
-    console.log('FACEBOOK send page event');
+    console.log(this.name + ' send page event');
     window.fbq('track', 'PageView');
   }
 
@@ -79,7 +55,8 @@ class FacebookPixel {
   }
 
   track(rudderElement) {
-
+    console.log(this.name + ' send track event');
+    return;
   }
 
   getContentType(rudderElement, defaultValue) {

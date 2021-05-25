@@ -1,6 +1,6 @@
 
 import {
-  getJSONTrimmed,
+  getJSONConfig,
   generateUUID,
   handleError,
   getDefaultPageProperties,
@@ -18,7 +18,6 @@ import {
 import after from "after";
 import Emitter from "component-emitter";
 import Storage from "./utils/storage";
-import { EventRepository } from "./utils/EventRepository";
 import { integrations } from "./integrations";
 // import logger from "./utils/logUtil";
 import CyntelliElementBuilder from "./utils/CyntelliElementBuilder";
@@ -26,8 +25,7 @@ import CyntelliElementBuilder from "./utils/CyntelliElementBuilder";
 /**
  * consts
  */
-const serverHost = 'https://r.adgeek.net';
-const apiServerUrl = serverHost + '/api';
+const API_ENDPOINT = 'https://r.adgeek.net/api';
 
 /**
  * global functions
@@ -65,19 +63,7 @@ function processDataInAnalyticsArray(analytics) {
   }
 }
 
-/**
- * Add the rudderelement object to flush queue
- *
- * @param {RudderElement} rudderElement
- */
-function enqueue(rudderElement, type) {
-  if (!this.eventRepository) {
-    this.eventRepository = EventRepository;
-  }
-  this.eventRepository.enqueue(rudderElement, type);
-}
-
-var logger = {debug: function(data){console.log.apply(null, arguments)}, error: function(){console.log.apply(this, arguments)}};
+var logger = {debug: function(){console.log.apply(null, arguments)}, error: function(){console.log.apply(this, arguments)}};
 
 /**
  * class responsible for handling core
@@ -103,7 +89,6 @@ class Analytics {
     this.toBeProcessedArray = [];
     this.toBeProcessedByIntegrationArray = [];
     this.storage = Storage;
-    this.eventRepository = EventRepository;
     this.sendAdblockPage = false;
     this.sendAdblockPageOptions = {};
     this.clientSuppliedCallbacks = {};
@@ -162,20 +147,34 @@ class Analytics {
   /**
    * Call control pane to get client configs
    *
-   * @param {*} writeKey
+   * @param {*} clientId
    * @memberof Analytics
    */
-  load(writeKey, options) {
+  load(clientId, options) {
     logger.debug("inside load");
     if (this.loaded) return;
 
     // validate writeKye
-    if (!/^[0-9a-z]{8}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{12}$/.test(writeKey)) {
+    if (!/^[0-9a-z]{8}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{12}$/.test(clientId)) {
       handleError({
         message:
-          "[Analytics] load:: Unable to load due to wrong writeKey or serverUrl"
+          "[Analytics] load:: Unable to load due to wrong clientId or serverUrl"
       });
       throw Error("failed to initialize");
+    }
+
+    if (!options) {
+      options = {
+         maxRetryDelay: 360000, // Upper cap on maximum delay for an event
+         minRetryDelay: 1000, // minimum delay before sending an event
+         backoffFactor: 2, // exponentional base
+         maxAttempts: 10, // max attempts
+         maxItems: 100,  // max number of events in storage
+       };
+    }
+
+    if (options && options.loadIntegration != undefined) {
+      this.loadIntegration = !!options.loadIntegration;
     }
 
     // prepare anonymousId
@@ -186,14 +185,7 @@ class Analytics {
     // fetch config
 
     // load integrtion
-    // const intgArray = [
-    //   // {name: 'CYNTELLI_PIXEL', config: {pvId: 0, pId:0}},
-    //   {name: 'FACEBOOK_PIXEL', config: {pixelId: '137401291692595'}}
-    // ];
-    // // set clientIntegrations length
-    // this.clientIntegrations = intgArray;
-    // this.initIntegrations(intgArray);
-    this.processResponse(200, '{"source":{"useAutoTracking":false,"destinations":[{"enabled":true,"destinationDefinition":{"name":"FACEBOOK_PIXEL"},"config":{"pixelId":"137401291692595"}}]}}');
+    getJSONConfig(this, API_ENDPOINT, clientId, this.processResponse);
 
     // process again new push elements
     processDataInAnalyticsArray(this);
@@ -332,7 +324,7 @@ class Analytics {
         object.readyCallback
       );
 
-      logger.debug("==registering ready callback===", object.executeReadyCallback);
+      logger.debug("==registering ready callback===");
       object.on("ready", object.executeReadyCallback);
 
       object.clientIntegrationObjects.forEach(intg => {
@@ -638,7 +630,7 @@ class Analytics {
    * @memberof Analytics
    */
   processTrack(event, properties, options, callback) {
-    const rudderElement = new RudderElementBuilder().setType("track").build();
+    const rudderElement = new CyntelliElementBuilder().setType("track").build();
     if (event) {
       rudderElement.setEventName(event);
     }
@@ -660,6 +652,22 @@ class Analytics {
   trackPage(rudderElement, options, callback) {
     this.processAndSendDataToDestinations(
       "page",
+      rudderElement,
+      options,
+      callback
+    );
+  }
+
+  /**
+   * Track call supporting rudderelement from builder
+   *
+   * @param {*} rudderElement
+   * @param {*} callback
+   * @memberof Analytics
+   */
+  trackEvent(rudderElement, options, callback) {
+    this.processAndSendDataToDestinations(
+      "track",
       rudderElement,
       options,
       callback
@@ -794,6 +802,8 @@ class Analytics {
         handleError({ message: `[sendToNative]:${err}` });
       }
 
+      logger.debug(rudderElement);
+
       // config plane native enabled destinations, still not completely loaded
       // in the page, add the events to a queue and process later
       if (!this.clientIntegrationObjects) {
@@ -804,9 +814,6 @@ class Analytics {
 
       // convert integrations object to server identified names, kind of hack now!
       transformToServerNames(rudderElement.message.integrations);
-
-      // self analytics process, send to rudder
-      enqueue.call(this, rudderElement, type);
 
       logger.debug(`${type} is called `);
       if (callback) {
@@ -916,6 +923,15 @@ if (eventsPushedAlready) {
 }
 // }
 
+// add listener of cyntellianalytics.push
+argumentsArray.push = function() {
+  let args = arguments[0].map(function(value){return value});
+  const method = args[0];
+  args.shift();
+  instance[method](...args);
+  return Array.prototype.push.call(this, arguments[0]);
+}
+
 const ready = instance.ready.bind(instance);
 const page = instance.page.bind(instance);
 const track = instance.track.bind(instance);
@@ -923,6 +939,7 @@ const identify = instance.identify.bind(instance);
 const load = instance.load.bind(instance);
 const initialized = (instance.initialized = true);
 const getAnonymousId = instance.getAnonymousId.bind(instance);
+
 
 export {
   initialized,
