@@ -15,6 +15,7 @@ class CyntelliMessage {
     this.userId = null;
     this.event = null;
     this.properties = {};
+    this.page_propertis = {};
     this.integrations = {};
     // By default, all integrations will be set as enabled from client
     // Decision to route to specific destinations will be taken at server end

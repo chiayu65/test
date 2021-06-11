@@ -19,19 +19,15 @@ class CyntelliElementBuilder {
     return this;
   }
 
-  // Build and set the property object
-  setPropertyBuilder(rudderPropertyBuilder) {
-    this.rudderProperty = rudderPropertyBuilder.build();
-    return this;
-  }
-
+  // set User properties
   setUserProperty(inputRudderUserProperty) {
     this.rudderUserProperty = inputRudderUserProperty;
     return this;
   }
 
-  setUserPropertyBuilder(rudderUserPropertyBuilder) {
-    this.rudderUserProperty = rudderUserPropertyBuilder.build();
+  // set User properties
+  setPageProperty(inputRudderPageProperty) {
+    this.rudderPageProperty = inputRudderPageProperty;
     return this;
   }
 
@@ -65,6 +61,7 @@ class CyntelliElementBuilder {
     element.setEventName(this.event);
     element.setProperty(this.rudderProperty);
     element.setUserProperty(this.rudderUserProperty);
+    element.setPageProperty(this.rudderPageProperty);
     return element;
   }
 }

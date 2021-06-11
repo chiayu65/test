@@ -601,7 +601,9 @@ class Analytics {
    * @memberof Analytics
    */
   processPage(category, name, properties, options, callback) {
-    const rudderElement = new CyntelliElementBuilder().setType("page").build();
+    const rudderElement = new CyntelliElementBuilder().setType("page")
+                                                      .setPageProperty(this.getPageProperties())
+                                                      .build();
 
     if (!properties) {
       properties = {};
@@ -615,8 +617,8 @@ class Analytics {
       properties.category = category;
     }
 
-    rudderElement.message.event = 'PageView';
-    rudderElement.message.properties = this.getPageProperties(properties); // properties;
+    rudderElement.setEventName('PageView');
+    rudderElement.setProperty(properties);
     this.trackPage(rudderElement, options, callback);
   }
 
@@ -630,7 +632,9 @@ class Analytics {
    * @memberof Analytics
    */
   processTrack(event, properties, options, callback) {
-    const rudderElement = new CyntelliElementBuilder().setType("track").build();
+    const rudderElement = new CyntelliElementBuilder().setType("track")
+                                                      .setPageProperty(this.getPageProperties({}))
+                                                      .build();
     if (event) {
       rudderElement.setEventName(event);
     }
@@ -639,6 +643,7 @@ class Analytics {
     } else {
       rudderElement.setProperty({});
     }
+
     this.trackEvent(rudderElement, options, callback);
   }
 
@@ -720,6 +725,9 @@ class Analytics {
   }
 
   getPageProperties(properties, options) {
+    if (!properties)
+      properties = {};
+
     const defaultPageProperties = getDefaultPageProperties();
     const optionPageProperties = options && options.page ? options.page : {};
     for (const key in defaultPageProperties) {

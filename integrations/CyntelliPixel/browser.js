@@ -30,7 +30,7 @@ class CyntelliPixel {
   page(rudderElement) {
     logger.debug('Cyntelli send page event');
     const msg = rudderElement.message;
-    const newProperties = this.buildParams('pi', msg.properties);
+    const newProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
     let data = null;
     data = this.merge({ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId}, newProperties);
@@ -43,8 +43,20 @@ class CyntelliPixel {
   }
 
   track(rudderElement) {
-    console.log("Send track to " + this.name);
-    console.log(rudderElement);
+    logger.debug('Cyntelli send track event');
+    const msg = rudderElement.message;
+    const pageProperties = this.buildParams('pi', msg.page_properties);
+    const newIds = this.buildParams('i', msg.identities);
+    let name = 'p';
+    if (msg.event == 'ViewContent' || msg.event == 'Purchase')
+        name = 'ec';
+
+    const properties = this.buildParams(name, msg.properties);
+    let data = null;
+    data = this.merge({ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId}, pageProperties);
+    data = this.merge(data, newIds);
+    data = this.merge(data, properties);
+    this.sendRequest(data);
   }
 
   getContentType(rudderElement, defaultValue) {
@@ -53,11 +65,22 @@ class CyntelliPixel {
 
   merge(obj1, obj2) {
     let obj = {};
-    for(let name in obj1)
-      obj[name] = obj1[name];
+    let value;
+    for(let name in obj1) {
+      value = obj1[name];
+      if (typeof value == 'object')
+        value = JSON.stringify(value);
 
-    for(let name in obj2)
-      obj[name] = obj2[name];
+      obj[name] = value;
+    }
+
+    for(let name in obj2) {
+      value = obj2[name];
+      if (typeof value == 'object')
+        value = JSON.stringify(value);
+
+      obj[name] = value;
+    }
 
     return obj;
   }

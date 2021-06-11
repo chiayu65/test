@@ -18,6 +18,10 @@ class CyntelliElement {
     this.message.user_properties = rudderUserProperty;
   }
 
+  setPageProperty(rudderPageProperty) {
+    this.message.page_properties = rudderPageProperty;
+  }
+
   setUserId(userId) {
     this.message.userId = userId;
   }

@@ -6,6 +6,7 @@ class RudderElementBuilder {
   constructor() {
     this.rudderProperty = null;
     this.rudderUserProperty = null;
+    this.rudderPageProperty = null;
     this.event = null;
     this.userId = null;
     this.channel = null;
@@ -31,6 +32,16 @@ class RudderElementBuilder {
 
   setUserPropertyBuilder(rudderUserPropertyBuilder) {
     this.rudderUserProperty = rudderUserPropertyBuilder.build();
+    return this;
+  }
+
+  setPageProperty(inputRudderPageProperty) {
+    this.rudderPageProperty = inputRudderPageProperty;
+    return this;
+  }
+
+  setPagePropertyBuilder(rudderPagePropertyBuilder) {
+    this.rudderPageProperty = rudderPagePropertyBuilder.build();
     return this;
   }
 
@@ -64,6 +75,7 @@ class RudderElementBuilder {
     element.setEventName(this.event);
     element.setProperty(this.rudderProperty);
     element.setUserProperty(this.rudderUserProperty);
+    element.setPageProperty(this.rudderPageProperty);
     return element;
   }
 }
