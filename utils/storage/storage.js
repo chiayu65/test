@@ -12,7 +12,7 @@ const defaults = {
   group_storage_trait: "_cgrptrait",
   user_storage_ga: '_ga',
   user_storage_fbp: '_fbp',
-  user_storage_fbp: '_fbc',
+  user_storage_fbc: '_fbc',
 };
 
 /**
@@ -227,7 +227,7 @@ class Storage {
       traits: this.getAnonymousTraits(),
       ga: this.getGa(),
       fbp: this.getFbp(),
-      fbp: this.getFbc()
+      fbc: this.getFbc()
     }
   }
 

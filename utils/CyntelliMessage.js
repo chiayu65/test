@@ -10,7 +10,7 @@ class CyntelliMessage {
     this.type = null;
     this.action = null;
     this.messageId = generateUUID().toString();
-    this.originalTimestamp = new Date().toISOString();
+    this.originalTimestamp = new Date().getTime();
     this.anonymousId = null;
     this.userId = null;
     this.event = null;

@@ -48,7 +48,7 @@ class CyntelliPixel {
     const pageProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
     let name = 'p';
-    if (msg.event == 'ViewContent' || msg.event == 'Purchase')
+    if (/^ViewContent|Purchase|AddToCart$/.test(msg.event))
         name = 'ec';
 
     const properties = this.buildParams(name, msg.properties);
@@ -57,10 +57,6 @@ class CyntelliPixel {
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
     this.sendRequest(data);
-  }
-
-  getContentType(rudderElement, defaultValue) {
-
   }
 
   merge(obj1, obj2) {

@@ -99,6 +99,8 @@ class Analytics {
     };
     this.loaded = false;
     this.loadIntegration = true;
+
+    console.log(this.storage);
   }
 
   /**
@@ -632,6 +634,7 @@ class Analytics {
    * @memberof Analytics
    */
   processTrack(event, properties, options, callback) {
+    console.log('get identities when trcak: ', this.getIdentities());
     const rudderElement = new CyntelliElementBuilder().setType("track")
                                                       .setPageProperty(this.getPageProperties({}))
                                                       .build();
@@ -777,6 +780,8 @@ class Analytics {
       rudderElement.message.userId = rudderElement.message.userId
         ? rudderElement.message.userId
         : this.userId;
+
+        console.log('get identities: ', this.getIdentities());
       rudderElement.message.identities = this.removeEmptyName(this.getIdentities());
       rudderElement.message.properties = this.removeEmptyName(rudderElement.message.properties);
 
