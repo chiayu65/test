@@ -20,6 +20,8 @@ const defaults = {
  */
 class Storage {
   constructor() {
+    this.data = {};
+
     // First try setting the storage to cookie else to localstorage
     Cookie.set("adg_cookies", true);
 
@@ -220,7 +222,7 @@ class Storage {
    * get identities
    */
   getIdentities() {
-    return {
+    let ids = {
       user_id: this.getUserId(),
       user_traits: this.getUserTraits(),
       uid: this.getAnonymousId(),
@@ -228,7 +230,21 @@ class Storage {
       ga: this.getGa(),
       fbp: this.getFbp(),
       fbc: this.getFbc()
-    }
+    };
+
+    for(let name in this.data)
+      ids[name] = this.data[name];
+
+    return ids;
+  }
+
+  /**
+   * set
+   * @param string name
+   * @param string value
+   */
+  setData(name, value) {
+    this.data[name] = value;
   }
 
   /**

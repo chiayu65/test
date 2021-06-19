@@ -471,13 +471,21 @@ class Analytics {
     this.processTrack(event, properties, options, callback);
   }
 
-  identify(userId, userTraits) {
-    logger.debug("inside identify");
-    if (userId)
-      this.storage.setUserId(userId);
+  identify(values) {
+    // logger.debug("inside identify");
+    console.log('identify123123', values);
+    if (typeof values == 'string')
+      this.storage.setUserId(values);
 
-    if (userTraits)
-      this.storage.setUserTraits(userTraits);
+    if (typeof values == 'object') {
+      let value;
+      for(let name in values) {
+        name = name.trim();
+        value = values[name].trim();
+        if (name.length > 0 && value.length > 0)
+          this.storage.setData(name, value);
+      }
+    }
   }
 
   alias() {

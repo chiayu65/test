@@ -4,9 +4,11 @@ import logger from "../../utils/logUtil";
 import querystring from "component-querystring";
 
 class FacebookPixel {
+
   constructor(config) {
     this.name = "FACEBOOK_PIXEL";
     this.pixelId = config.pixelId;
+    this.standEventsReg = /^(AddPaymentInfo|AddToCart|AddToWishlist|CompleteRegistration|Contact|CustomizeProduct|Donate|FindLocation|InitiateCheckout|Lead|PageView|Purchase|Schedule|Search|StartTrial|SubmitApplication|Subscribe|ViewContent)$/;
   }
 
   init() {
@@ -32,7 +34,6 @@ class FacebookPixel {
       "fbpixel-integration",
       "https://connect.facebook.net/en_US/fbevents.js"
     );
-    // window.fbq("init", this.pixelId);
   }
 
   isLoaded() {
@@ -46,32 +47,44 @@ class FacebookPixel {
   }
 
   page(rudderElement) {
-    console.log(this.name + ' send page event');
-    window.fbq('track', 'PageView');
+    const msg = rudderElement.message;
+    const identities = msg.identities
+    const payload = {eventID: msg.messageId, external_id: identities.uid};
+    this.send('PageView', payload);
   }
 
   identify(rudderElement) {
-
-  }
-
-  track(rudderElement) {
-    console.log(this.name + ' send track event');
     return;
   }
 
-  getContentType(rudderElement, defaultValue) {
+  track(rudderElement) {
+    const msg = rudderElement.message;
+    const identities = msg.identities;
+    const props = msg.properties;
+    const event = msg.event;
+    let options = {eventID: msg.messageId};
+    let payload;
+    if (event == 'AddToCart' || event == 'ViewContent') {
+      const qty = parseInt(props.quantity || 1);
+      const value = parseInt(props.value || 1);
+      const currency = props.currency || 'TWD';
+      payload = {value: qty*value, content_type: 'product', contents: [props], currency: currency};
+      console.log('payload', payload);
+    } else {
+      payload = props;
+    }
 
+    // const payload = props;
+    this.send(msg.event, payload, options);
   }
 
-  merge(obj1, obj2) {
-    let obj = {};
-    for(let name in obj1)
-      obj[name] = obj1[name];
-
-    for(let name in obj2)
-      obj[name] = obj2[name];
-
-    return obj;
+  send(event, payload, options) {
+    if (event != 'PageView') {
+      console.log(options);
+      const track = (this.standEventsReg.test(event)) ? 'trackSingle' : 'trackSingleCustom';
+        window.fbq(track, this.pixelId, event, payload, options);
+    } else
+      window.fbq('trackSingle', this.pixelId, event, payload);
   }
 }
 
