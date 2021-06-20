@@ -48,12 +48,12 @@ class CyntelliPixel {
     const pageProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
     let name = 'p';
-    if (/^ViewContent|Purchase|AddToCart$/.test(msg.event))
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event) != false)
         name = 'ec';
 
     const properties = this.buildParams(name, msg.properties);
-    let data = null;
-    data = this.merge({ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId}, pageProperties);
+    let data = {ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId};
+    data = this.merge(data, pageProperties);
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
     this.sendRequest(data);
@@ -99,7 +99,6 @@ class CyntelliPixel {
   }
 
   sendRequest(data) {
-    logger.debug('Send Request by CyntelliPixel:', data);
     const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + querystring.stringify(data);
     let img = new Image;
     img.src = url;

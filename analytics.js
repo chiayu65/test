@@ -427,7 +427,6 @@ class Analytics {
   }
 
   page(category, name, properties, options, callback) {
-    logger.debug("Analytics.page()");
     if (!this.loaded)
       return;
 
@@ -462,7 +461,6 @@ class Analytics {
   }
 
   track(event, properties, options, callback) {
-    logger.debug("inside track");
     if (!this.loaded) return;
     if (typeof options === "function") (callback = options), (options = null);
     if (typeof properties === "function")
@@ -472,8 +470,6 @@ class Analytics {
   }
 
   identify(values) {
-    // logger.debug("inside identify");
-    console.log('identify123123', values);
     if (typeof values == 'string')
       this.storage.setUserId(values);
 
@@ -642,7 +638,6 @@ class Analytics {
    * @memberof Analytics
    */
   processTrack(event, properties, options, callback) {
-    console.log('get identities when trcak: ', this.getIdentities());
     const rudderElement = new CyntelliElementBuilder().setType("track")
                                                       .setPageProperty(this.getPageProperties({}))
                                                       .build();
