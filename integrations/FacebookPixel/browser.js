@@ -66,17 +66,20 @@ class FacebookPixel {
     const event = msg.event;
     let options = {eventID: msg.messageId};
     let payload;
-    if (/^AddToCart|ViewContent|Purchase$/.test(event)) {
-      if (event != 'Purchase') {
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
+      if (/Purchase|InitiateCheckout|AddPaymentInfo/.test(event) == false) {
         const qty = parseInt(props.quantity || 1);
         const value = parseInt(props.value || 1);
         const currency = props.currency || 'TWD';
         payload = {value: qty*value, contents: [props], currency: currency};
       } else {
         payload = props;
+        payload['num_items'] = (props.contents || []).length;
       }
+
       if (this.enableDPA)
         payload['content_type'] = this.contentType;
+
     } else {
       payload = props;
     }
