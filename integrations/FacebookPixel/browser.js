@@ -8,6 +8,8 @@ class FacebookPixel {
   constructor(config) {
     this.name = "FACEBOOK_PIXEL";
     this.pixelId = config.pixelId;
+    this.enableDPA = config.enableDPA || false;
+    this.contentType = config.contentType || 'product';
     this.standEventsReg = /^(AddPaymentInfo|AddToCart|AddToWishlist|CompleteRegistration|Contact|CustomizeProduct|Donate|FindLocation|InitiateCheckout|Lead|PageView|Purchase|Schedule|Search|StartTrial|SubmitApplication|Subscribe|ViewContent)$/;
   }
 
@@ -64,12 +66,17 @@ class FacebookPixel {
     const event = msg.event;
     let options = {eventID: msg.messageId};
     let payload;
-    if (event == 'AddToCart' || event == 'ViewContent') {
-      const qty = parseInt(props.quantity || 1);
-      const value = parseInt(props.value || 1);
-      const currency = props.currency || 'TWD';
-      payload = {value: qty*value, content_type: 'product', contents: [props], currency: currency};
-      console.log('payload', payload);
+    if (/^AddToCart|ViewContent|Purchase$/.test(event)) {
+      if (event != 'Purchase') {
+        const qty = parseInt(props.quantity || 1);
+        const value = parseInt(props.value || 1);
+        const currency = props.currency || 'TWD';
+        payload = {value: qty*value, contents: [props], currency: currency};
+      } else {
+        payload = props;
+      }
+      if (this.enableDPA)
+        payload['content_type'] = this.contentType;
     } else {
       payload = props;
     }
