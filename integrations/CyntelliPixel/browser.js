@@ -46,16 +46,19 @@ class CyntelliPixel {
     logger.debug('Cyntelli send track event');
     const msg = rudderElement.message;
     const pageProperties = this.buildParams('pi', msg.page_properties);
+    console.log('pp+', pageProperties);
     const newIds = this.buildParams('i', msg.identities);
     let name = 'p';
-    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event) != false)
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(msg.event))
         name = 'ec';
 
     const properties = this.buildParams(name, msg.properties);
     let data = {ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId};
     data = this.merge(data, pageProperties);
+
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
+        console.log(data);
     this.sendRequest(data);
   }
 
@@ -99,7 +102,12 @@ class CyntelliPixel {
   }
 
   sendRequest(data) {
-    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + querystring.stringify(data);
+    let qs = [];
+    for(let name in data) {
+      qs.push(name + '=' + encodeURIComponent(data[name]));
+    }
+
+    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + qs.join('&');
     let img = new Image;
     img.src = url;
     window.document.body.appendChild(img);

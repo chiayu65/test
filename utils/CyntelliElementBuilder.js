@@ -4,7 +4,7 @@ import CyntelliElement from "./CyntelliElement.js";
 
 class CyntelliElementBuilder {
   constructor() {
-    this.rudderProperty = null;
+    this.rudderProperty = {};
     this.rudderUserProperty = null;
     this.event = null;
     this.userId = null;

@@ -466,6 +466,8 @@ class Analytics {
     if (typeof properties === "function")
       (callback = properties), (options = null), (properties = null);
 
+    console.log('props @ track', properties);
+
     this.processTrack(event, properties, options, callback);
   }
 
@@ -650,6 +652,9 @@ class Analytics {
       rudderElement.setProperty({});
     }
 
+    console.log('props @ processTrack', properties);
+    console.log('element @ processTrack', rudderElement);
+
     this.trackEvent(rudderElement, options, callback);
   }
 
@@ -784,9 +789,8 @@ class Analytics {
         ? rudderElement.message.userId
         : this.userId;
 
-        console.log('get identities: ', this.getIdentities());
       rudderElement.message.identities = this.removeEmptyName(this.getIdentities());
-      rudderElement.message.properties = this.removeEmptyName(rudderElement.message.properties);
+      // rudderElement.message.properties = this.removeEmptyName(rudderElement.message.properties);
 
       this.processOptionsParam(rudderElement, options);
 
