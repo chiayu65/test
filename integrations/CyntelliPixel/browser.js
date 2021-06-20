@@ -60,25 +60,23 @@ class CyntelliPixel {
   }
 
   merge(obj1, obj2) {
-    let obj = {};
-    let value;
-    for(let name in obj1) {
-      value = obj1[name];
-      if (typeof value == 'object')
-        value = JSON.stringify(value);
+    const result = {};
 
-      obj[name] = value;
-    }
+    Object.keys(obj1).forEach(function(key){
+      if (typeof obj1[key] == 'object')
+        result[key] = JSON.stringify(obj1[key]);
+      else
+        result[key] = obj1[key];
+    });
 
-    for(let name in obj2) {
-      value = obj2[name];
-      if (typeof value == 'object')
-        value = JSON.stringify(value);
+    Object.keys(obj2).forEach(function(key){
+      if (typeof obj2[key] == 'object')
+        result[key] = JSON.stringify(obj2[key]);
+      else
+        result[key] = obj2[key];
+    });
 
-      obj[name] = value;
-    }
-
-    return obj;
+    return result;
   }
 
   formatRevenue(revenue) {
