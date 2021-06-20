@@ -107,7 +107,7 @@ class CyntelliPixel {
       qs.push(name + '=' + encodeURIComponent(data[name]));
     }
 
-    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + qs.join('&');
+    const url = this.baseUri + '/' + this.pvId + '/tr/' + this.pId + '?' + qs.join('&');
     let img = new Image;
     img.src = url;
     window.document.body.appendChild(img);
