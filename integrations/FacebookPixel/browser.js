@@ -31,7 +31,6 @@ class FacebookPixel {
     window.fbq.version = "2.0";
     window.fbq.queue = [];
 
-    window.fbq("init", this.pixelId);
     ScriptLoader(
       "fbpixel-integration",
       "https://connect.facebook.net/en_US/fbevents.js"
@@ -51,7 +50,20 @@ class FacebookPixel {
   page(rudderElement) {
     const msg = rudderElement.message;
     const identities = msg.identities
-    const payload = {eventID: msg.messageId, external_id: identities.uid};
+    const payload = {eventID: msg.messageId};
+    const names = {phone: 'ph', email: 'em', uid: 'external_id'};
+    const userData = {};
+    let value;
+    let alias;
+
+    for(let name in names) {
+      value = identities[name] || null;
+      alias = names[name];
+      if (value)
+        userData[alias] = value;
+    }
+
+    window.fbq("init", this.pixelId, userData);
     this.send('PageView', payload);
   }
 
@@ -61,7 +73,6 @@ class FacebookPixel {
 
   track(rudderElement) {
     const msg = rudderElement.message;
-    const identities = msg.identities;
     const props = msg.properties;
     const event = msg.event;
     let options = {eventID: msg.messageId};
@@ -81,7 +92,10 @@ class FacebookPixel {
         payload['content_type'] = this.contentType;
 
     } else {
-      payload = props;
+      if (event == 'Search')
+        payload = {search_string: props.keyword};
+      else
+        payload = props;
     }
 
     // const payload = props;
@@ -92,7 +106,7 @@ class FacebookPixel {
     if (event != 'PageView') {
       console.log(options);
       const track = (this.standEventsReg.test(event)) ? 'trackSingle' : 'trackSingleCustom';
-        window.fbq(track, this.pixelId, event, payload, options);
+      window.fbq(track, this.pixelId, event, payload, options);
     } else
       window.fbq('trackSingle', this.pixelId, event, payload);
   }
