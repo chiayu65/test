@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -9,8 +10,11 @@ module.exports = {
     library: 'cyntelli-sdk-js',
     libraryTarget: 'umd',
   },
-  node: {
-    child_process: "empty",
-    fs: "empty", // if unable to resolve "fs"
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        extractComments: 'all',
+      }),
+    ],
   },
 };

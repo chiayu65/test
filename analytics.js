@@ -479,9 +479,9 @@ class Analytics {
       let value;
       for(let name in values) {
         name = name.trim();
-        value = values[name].trim();
+        value = values[name] || '';
         if (name.length > 0 && value.length > 0)
-          this.storage.setData(name, value);
+          this.storage.setData(name, value.trim());
       }
     }
   }
@@ -906,7 +906,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.0.1';
+window.cyntellianalytics.version = '1.0.3';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;
