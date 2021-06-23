@@ -64,7 +64,7 @@ class FacebookPixel {
     }
 
     window.fbq("init", this.pixelId, userData);
-    this.send('PageView', payload);
+    this.send('PageView', {}, payload);
   }
 
   identify(rudderElement) {
@@ -103,12 +103,8 @@ class FacebookPixel {
   }
 
   send(event, payload, options) {
-    if (event != 'PageView') {
-      console.log(options);
       const track = (this.standEventsReg.test(event)) ? 'trackSingle' : 'trackSingleCustom';
       window.fbq(track, this.pixelId, event, payload, options);
-    } else
-      window.fbq('trackSingle', this.pixelId, event, payload);
   }
 }
 
