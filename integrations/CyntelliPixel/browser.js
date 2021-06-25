@@ -109,6 +109,9 @@ class CyntelliPixel {
 
     const url = this.baseUri + '/' + this.pvId + '/tr/' + this.pId + '?' + qs.join('&');
     let img = new Image;
+    img.width = 1;
+    img.height =1;
+    img.style = 'display:none';
     img.src = url;
     window.document.body.appendChild(img);
   }
