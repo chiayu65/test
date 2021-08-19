@@ -36,6 +36,14 @@ class CyntelliPixel {
     data = this.merge({ev: msg.event, hit:msg.originalTimestamp, evId: msg.messageId}, newProperties);
     data = this.merge(data, newIds);
     this.sendRequest(data);
+
+    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?action=sync';
+    let img = new Image;
+    img.width = 1;
+    img.height =1;
+    img.style = 'display:none';
+    img.src = url;
+    window.document.body.appendChild(img);
   }
 
   identify(rudderElement) {

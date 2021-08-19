@@ -7,7 +7,6 @@ class GoogleAds {
     this.pageLoadConversions = config.pageLoadConversions;
     this.clickEventConversions = config.clickEventConversions;
     this.defaultPageConversion = config.defaultPageConversion;
-
     this.name = "GOOGLEADS";
   }
 
@@ -41,42 +40,70 @@ class GoogleAds {
 
   // https://developers.google.com/gtagjs/reference/event
   track(rudderElement) {
-    console.log(this.name + ' send track event');
-    return ;
+    console.log("in GoogleAdsAnalyticsManager track");
+    const msg = rudderElement.message;
+    const props = msg.properties;
+    const event = msg.event;
+    const identities = msg.identities;
+    let sentTo = this.conversionId;
+    let payload = {};
 
-    logger.debug("in GoogleAdsAnalyticsManager track");
+    // prepare payload
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
+      if (/InitiateCheckout|AddPaymentInfo/.test(event) != false) {
+        payload = {items: [props]};
+      } else {
+        payload = props;
+      }
+
+      if (event == 'Purchase')
+        payload['transaction_id'] = props['order_id'];
+    } else {
+      if (event == 'Search')
+        payload = {search_string: props.keyword};
+      else
+        payload = props;
+    }
+
     const conversionData = this.getConversionData(
       this.clickEventConversions,
-      rudderElement.message.event
+      event
     );
+
     if (conversionData.conversionLabel) {
       const { conversionLabel } = conversionData;
-      const { eventName } = conversionData;
-      const sendToValue = `${this.conversionId}/${conversionLabel}`;
-      const properties = {};
-      if (rudderElement.properties) {
-        properties.value = rudderElement.properties.revenue;
-        properties.currency = rudderElement.properties.currency;
-        properties.transaction_id = rudderElement.properties.order_id;
-      }
-      properties.send_to = sendToValue;
-      window.gtag("event", eventName, properties);
+      sentTo += '/' + conversionLabel;
     }
+
+    payload['user_id'] = identities.uid;
+    payload['send_to'] = sentTo;
+    console.log(payload);
+    window.gtag("event", event, payload);
   }
 
   page(rudderElement) {
-    logger.debug("in GoogleAdsAnalyticsManager page");
+    console.log("in GoogleAdsAnalyticsManager page");
+    const msg = rudderElement.message;
+    const identities = msg.identities;
     const conversionData = this.getConversionData(
       this.pageLoadConversions,
       rudderElement.message.name
     );
+
+    let sentTo = this.conversionId,
+        eventName = 'PageView';
+
     if (conversionData.conversionLabel) {
       const { conversionLabel } = conversionData;
       const { eventName } = conversionData;
-      window.gtag("event", eventName, {
-        send_to: `${this.conversionId}/${conversionLabel}`,
-      });
+      sentTo += '/' + conversionLabel;
     }
+
+    let props = {
+      send_to: sentTo,
+      user_id: identities.uid
+    };
+    window.gtag("event", eventName, props);
   }
 
   getConversionData(eventTypeConversions, eventName) {
@@ -85,7 +112,7 @@ class GoogleAds {
       if (eventName) {
         eventTypeConversions.forEach((eventTypeConversion) => {
           if (
-            eventTypeConversion.name.toLowerCase() === eventName.toLowerCase()
+            eventTypeConversion.name === eventName
           ) {
             // rudderElement["message"]["name"]
             conversionData.conversionLabel =
@@ -95,7 +122,7 @@ class GoogleAds {
         });
       } else if (this.defaultPageConversion) {
         conversionData.conversionLabel = this.defaultPageConversion;
-        conversionData.eventName = "Viewed a Page";
+        conversionData.eventName = "PageView";
       }
     }
     return conversionData;
