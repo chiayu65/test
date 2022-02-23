@@ -99,8 +99,6 @@ class Analytics {
     };
     this.loaded = false;
     this.loadIntegration = true;
-
-    console.log(this.storage);
   }
 
   /**
@@ -465,9 +463,6 @@ class Analytics {
     if (typeof options === "function") (callback = options), (options = null);
     if (typeof properties === "function")
       (callback = properties), (options = null), (properties = null);
-
-    console.log('props @ track', properties);
-
     this.processTrack(event, properties, options, callback);
   }
 
@@ -906,7 +901,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.0.3';
+window.cyntellianalytics.version = '1.1.0';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;

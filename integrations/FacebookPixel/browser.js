@@ -68,6 +68,7 @@ class FacebookPixel {
   }
 
   identify(rudderElement) {
+    logger.debug('fb identify');
     return;
   }
 
