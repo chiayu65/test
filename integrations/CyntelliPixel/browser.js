@@ -54,7 +54,6 @@ class CyntelliPixel {
     logger.debug('Cyntelli send track event');
     const msg = rudderElement.message;
     const pageProperties = this.buildParams('pi', msg.page_properties);
-    console.log('pp+', pageProperties);
     const newIds = this.buildParams('i', msg.identities);
     let name = 'p';
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(msg.event))
@@ -66,7 +65,6 @@ class CyntelliPixel {
 
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
-        console.log(data);
     this.sendRequest(data);
   }
 
