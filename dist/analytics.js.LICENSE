@@ -1921,8 +1921,6 @@
 
 // CONCATENATED MODULE: ./integrations/ElandPixel/browser.js
 
-// this.sendRequest(data);
-
 // CONCATENATED MODULE: ./integrations/ElandPixel/index.js
 
 // EXTERNAL MODULE: ./utils/RudderContext.js
@@ -2171,6 +2169,8 @@
 // structure user supplied integrations object to rudder format
 
 // try to first send to all integrations, if list populated from BE
+
+// logger.debug(rudderElement);
 
 // config plane native enabled destinations, still not completely loaded
 

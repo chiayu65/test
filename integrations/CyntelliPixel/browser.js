@@ -37,7 +37,12 @@ class CyntelliPixel {
     data = this.merge(data, newIds);
     this.sendRequest(data);
 
-    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?action=sync';
+    let syncData = this.merge(newIds, {ev: 'idsync', action: 'sync'}),
+        qs = [];
+    for(let name in syncData) {
+      qs.push(name + '=' + encodeURIComponent(syncData[name]));
+    }
+    const url = this.baseUri + '/' + this.pvId + '/imp/' + this.pId + '?' + qs.join('&');
     let img = new Image;
     img.width = 1;
     img.height =1;

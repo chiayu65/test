@@ -817,7 +817,7 @@ class Analytics {
         handleError({ message: `[sendToNative]:${err}` });
       }
 
-      logger.debug(rudderElement);
+      // logger.debug(rudderElement);
 
       // config plane native enabled destinations, still not completely loaded
       // in the page, add the events to a queue and process later
@@ -901,7 +901,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.1.0';
+window.cyntellianalytics.version = '1.1.1';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;
