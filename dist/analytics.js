@@ -108,6 +108,30 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./integrations/CompassPixel/browser.js":
+/*!**********************************************!*\
+  !*** ./integrations/CompassPixel/browser.js ***!
+  \**********************************************/
+/*! exports provided: CompassPixel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"CompassPixel\", function() { return CompassPixel; });\n/* harmony import */ var _utils_logUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/logUtil */ \"./utils/logUtil.js\");\n\n\nclass CompassPixel {\n  constructor(config) {\n    this.advId = config.advId;//AW-696901813\n    this.conversions = config.conversions || [];\n    this.name = \"CompassPixel\";\n  }\n\n  init() {\n    _utils_logUtil__WEBPACK_IMPORTED_MODULE_0__[\"default\"].debug(\"===in init CompassPixel ===\");\n  }\n\n  identify(rudderElement) {\n    _utils_logUtil__WEBPACK_IMPORTED_MODULE_0__[\"default\"].debug(\"[CompassPixel] identify:: method not supported\");\n  }\n\n  track(rudderElement) {\n    console.log(\"in CompassPixel track\");\n    const msg = rudderElement.message;\n    const ev = msg.event;\n    const cv = this.getConversion(ev);\n    if (cv === false)\n      return;\n\n    const s = document.createElement('script');\n    let src = 'https://dsp.logly.co.jp/conv/v2.js?adv_id=' + this.advId + '&cv_type=';\n    src += cv.type;\n    s.async = true;\n    s.src = src;\n    const s0 = document.getElementsByTagName('script')[0];\n    s0.parentNode.insertBefore(s, s0);\n    // console.log(\"send conversion of compass: \" + src);\n  }\n\n  page(rudderElement) {\n    console.log(\"in CompassPixel page\");\n    (function () {\n      var _lgy     = document.createElement('script');\n      var _lgy_adv = 1639;\n      window._lgy_advs = window._lgy_advs || {};\n      window._lgy_advs[_lgy_adv] = false;\n      window._lgy_options = window._lgy_options || {};\n      window._lgy_options[_lgy_adv] = {};\n      _lgy.async = true;\n      _lgy.src = 'https://dsp.logly.co.jp/seg.js';\n      var _lgy0 = document.getElementsByTagName('script')[0];\n      _lgy0.parentNode.insertBefore(_lgy, _lgy0);\n    })();\n  }\n\n  getConversion(event) {\n    const cvs = this.conversions;\n    if (cvs.length == 0)\n      return false;\n\n    for(let i=0; i<cvs.length; i++) {\n      const cv = cvs[i];\n      if (cv.event == event)\n        return cv;\n    }\n\n    return false;\n  }\n\n  isLoaded() {\n    return true;\n  }\n\n  isReady() {\n    return true;\n  }\n}\n\n\n\n\n//# sourceURL=webpack://cyntelli-sdk-js/./integrations/CompassPixel/browser.js?");
+
+/***/ }),
+
+/***/ "./integrations/CompassPixel/index.js":
+/*!********************************************!*\
+  !*** ./integrations/CompassPixel/index.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./browser */ \"./integrations/CompassPixel/browser.js\");\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (_browser__WEBPACK_IMPORTED_MODULE_0__[\"CompassPixel\"]);\n\n\n//# sourceURL=webpack://cyntelli-sdk-js/./integrations/CompassPixel/index.js?");
+
+/***/ }),
+
 /***/ "./integrations/CyntelliPixel/browser.js":
 /*!***********************************************!*\
   !*** ./integrations/CyntelliPixel/browser.js ***!
@@ -272,7 +296,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"integrations\", function() { return integrations; });\n/* harmony import */ var _FacebookPixel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FacebookPixel */ \"./integrations/FacebookPixel/index.js\");\n/* harmony import */ var _CyntelliPixel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CyntelliPixel */ \"./integrations/CyntelliPixel/index.js\");\n/* harmony import */ var _GoogleAds__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GoogleAds */ \"./integrations/GoogleAds/index.js\");\n/* harmony import */ var _ElandPixel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ElandPixel */ \"./integrations/ElandPixel/index.js\");\n/* harmony import */ var _LinePixel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LinePixel */ \"./integrations/LinePixel/index.js\");\n\n\n\n\n\n\n// the key names should match the destination.name value to keep partity everywhere\n// (config-plan name, native destination.name , exported integration name(this one below))\n\nconst integrations = {\n  FACEBOOK_PIXEL: _FacebookPixel__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  CYNTELLI_PIXEL: _CyntelliPixel__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  GOOGLEADS: _GoogleAds__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  ELAND_PIXEL: _ElandPixel__WEBPACK_IMPORTED_MODULE_3__[\"default\"],\n  LINE_PIXEL: _LinePixel__WEBPACK_IMPORTED_MODULE_4__[\"default\"]\n};\n\n\n\n\n//# sourceURL=webpack://cyntelli-sdk-js/./integrations/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"integrations\", function() { return integrations; });\n/* harmony import */ var _FacebookPixel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FacebookPixel */ \"./integrations/FacebookPixel/index.js\");\n/* harmony import */ var _CyntelliPixel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CyntelliPixel */ \"./integrations/CyntelliPixel/index.js\");\n/* harmony import */ var _GoogleAds__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GoogleAds */ \"./integrations/GoogleAds/index.js\");\n/* harmony import */ var _ElandPixel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ElandPixel */ \"./integrations/ElandPixel/index.js\");\n/* harmony import */ var _LinePixel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./LinePixel */ \"./integrations/LinePixel/index.js\");\n/* harmony import */ var _CompassPixel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CompassPixel */ \"./integrations/CompassPixel/index.js\");\n\n\n\n\n\n\n\n// the key names should match the destination.name value to keep partity everywhere\n// (config-plan name, native destination.name , exported integration name(this one below))\n\nconst integrations = {\n  FACEBOOK_PIXEL: _FacebookPixel__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  CYNTELLI_PIXEL: _CyntelliPixel__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  GOOGLEADS: _GoogleAds__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  ELAND_PIXEL: _ElandPixel__WEBPACK_IMPORTED_MODULE_3__[\"default\"],\n  LINE_PIXEL: _LinePixel__WEBPACK_IMPORTED_MODULE_4__[\"default\"],\n  COMPASS_PIXEL: _CompassPixel__WEBPACK_IMPORTED_MODULE_5__[\"default\"],\n};\n\n\n\n\n//# sourceURL=webpack://cyntelli-sdk-js/./integrations/index.js?");
 
 /***/ }),
 

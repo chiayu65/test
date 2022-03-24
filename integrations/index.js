@@ -3,6 +3,7 @@ import * as CYNTELLIPixel from "./CyntelliPixel";
 import * as GoogleAds from "./GoogleAds";
 import * as ElandPixel from "./ElandPixel";
 import * as LinePixel from "./LinePixel";
+import * as CompassPixel from "./CompassPixel";
 
 // the key names should match the destination.name value to keep partity everywhere
 // (config-plan name, native destination.name , exported integration name(this one below))
@@ -12,7 +13,8 @@ const integrations = {
   CYNTELLI_PIXEL: CYNTELLIPixel.default,
   GOOGLEADS: GoogleAds.default,
   ELAND_PIXEL: ElandPixel.default,
-  LINE_PIXEL: LinePixel.default
+  LINE_PIXEL: LinePixel.default,
+  COMPASS_PIXEL: CompassPixel.default,
 };
 
 export { integrations };
