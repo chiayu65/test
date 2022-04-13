@@ -1,9 +1,8 @@
-import logger from "../../utils/logUtil";
-
 class LinePixel {
   constructor(config) {
     this.tagId = config.tagId;//AW-696901813
     this.conversions = config.conversions || [];
+    this.excludes = config.excludes || [];
     this.name = "LinePixel";
   }
 
@@ -23,18 +22,20 @@ class LinePixel {
       tagId: this.tagId
     });
 
-
-    logger.debug("===in init LinePixel ===");
+    console.log("===in init LinePixel ===");
   }
 
   identify(rudderElement) {
-    logger.debug("[LinePixel] identify:: method not supported");
+    console.log("[LinePixel] identify:: method not supported");
   }
 
   track(rudderElement) {
     console.log("in LinePixel track");
     const msg = rudderElement.message;
     const ev = msg.event;
+    if (!this.canSendEvent(ev))
+      return;
+
     const cv = this.getConversion(ev);
     if (cv !== false)
       window._lt('send', 'cv', {type: cv.alias}, [this.tagId]);
@@ -46,6 +47,9 @@ class LinePixel {
     console.log("in LinePixel page");
     const msg = rudderElement.message;
     const ev = msg.event;
+    if (!this.canSendEvent('PageView'))
+      return;
+
     window._lt('send', 'pv', [this.tagId]);
     window._lt('send', 'cv', {type: ev}, [this.tagId]);
   }
@@ -70,6 +74,10 @@ class LinePixel {
 
   isReady() {
     return typeof window._lt === 'function';
+  }
+
+  canSendEvent(ev) {
+    return this.excludes.indexOf(ev) === -1;
   }
 }
 

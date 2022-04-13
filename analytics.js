@@ -901,7 +901,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.2.0';
+window.cyntellianalytics.version = '1.2.1';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;

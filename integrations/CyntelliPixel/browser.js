@@ -1,7 +1,4 @@
-import is from "is";
 import ScriptLoader from "../ScriptLoader";
-import logger from "../../utils/logUtil";
-import querystring from "component-querystring";
 
 class CyntelliPixel {
   constructor(config) {
@@ -13,22 +10,22 @@ class CyntelliPixel {
   }
 
   init() {
-    logger.debug("===in init CyntelliPixel===");
+    console.log("===in init CyntelliPixel===");
     this.isIint = true;
   }
 
   isLoaded() {
-    logger.debug("in Cyntelli Pixel isLoaded");
+    console.log("in Cyntelli Pixel isLoaded");
     return this.isIint;
   }
 
   isReady() {
-    logger.debug("in Cyntelli Pixel isReady");
+    console.log("in Cyntelli Pixel isReady");
     return this.isLoaded();
   }
 
   page(rudderElement) {
-    logger.debug('Cyntelli send page event');
+    console.log('Cyntelli send page event');
     const msg = rudderElement.message;
     const newProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
@@ -56,7 +53,7 @@ class CyntelliPixel {
   }
 
   track(rudderElement) {
-    logger.debug('Cyntelli send track event');
+    console.log('Cyntelli send track event');
     const msg = rudderElement.message;
     const pageProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);

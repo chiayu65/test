@@ -1,7 +1,4 @@
-import is from "is";
 import ScriptLoader from "../ScriptLoader";
-import logger from "../../utils/logUtil";
-import querystring from "component-querystring";
 
 class FacebookPixel {
 
@@ -10,6 +7,7 @@ class FacebookPixel {
     this.pixelId = config.pixelId;
     this.enableDPA = config.enableDPA || false;
     this.contentType = config.contentType || 'product';
+    this.excludes = config.excludes || [];
     this.standEventsReg = /^(AddPaymentInfo|AddToCart|AddToWishlist|CompleteRegistration|Contact|CustomizeProduct|Donate|FindLocation|InitiateCheckout|Lead|PageView|Purchase|Schedule|Search|StartTrial|SubmitApplication|Subscribe|ViewContent)$/;
   }
 
@@ -64,11 +62,14 @@ class FacebookPixel {
     }
 
     window.fbq("init", this.pixelId, userData);
+    if (!this.canSendEvent('PageView'))
+      return;
+
     this.send('PageView', {}, payload);
   }
 
   identify(rudderElement) {
-    logger.debug('fb identify');
+    console.log('fb identify');
     return;
   }
 
@@ -76,6 +77,11 @@ class FacebookPixel {
     const msg = rudderElement.message;
     const props = msg.properties;
     const event = msg.event;
+
+    // check event could be sent
+    if (!this.canSendEvent(event))
+      return;
+
     let options = {eventID: msg.messageId};
     let payload;
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
@@ -106,6 +112,10 @@ class FacebookPixel {
   send(event, payload, options) {
       const track = (this.standEventsReg.test(event)) ? 'trackSingle' : 'trackSingleCustom';
       window.fbq(track, this.pixelId, event, payload, options);
+  }
+
+  canSendEvent(ev) {
+    return this.excludes.indexOf(ev) === -1;
   }
 }
 

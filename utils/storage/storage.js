@@ -124,10 +124,12 @@ class Storage {
    * @param {*} value
    */
   setAnonymousId(value) {
+    console.log('set anon id: ' + value);
     if (typeof value !== "string") {
       logger.error("[Storage] setAnonymousId:: anonymousId should be string");
       return;
     }
+
     this.storage.set(
       defaults.user_storage_anonymousId,
       this.trim(value)
@@ -182,7 +184,7 @@ class Storage {
    */
   getAnonymousId() {
     const origUid = this.storage.get(defaults.user_storage_old_anonymousId);
-    if (/^[a-z0-9]{32}$/.test(origUid))
+    if (origUid != 'undefined')
       this.setAnonymousId(origUid);
 
     return this.storage.get(defaults.user_storage_anonymousId);

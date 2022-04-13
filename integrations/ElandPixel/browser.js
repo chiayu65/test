@@ -1,11 +1,10 @@
-import is from "is";
 import ScriptLoader from "../ScriptLoader";
-import logger from "../../utils/logUtil";
-import querystring from "component-querystring";
 
 class ElandPixel {
   constructor(config) {
     this.name = "ELAND_PIXEL";
+    this.source = config.source;
+    this.subFolder = config.subFolder;
     this.sdk = null;
   }
 
@@ -33,16 +32,14 @@ class ElandPixel {
     const msg = rudderElement.message;
     const newIds = msg.identities;
     const payload = {
-        "source":"adgeek",
-        "trackType":"view",
-        "targetType":"usual",
-        "trackSubfolderDepth":1,
-        "subFolder":"footer",
-        "adInfo":{
-            "adId": ""
-        },
-        "ecInfo":{
-            "memberID": newIds.uid
+        source: this.source, //"adgeek",
+        trackType: "view",
+        targetType: "usual",
+        trackSubfolderDepth: 1,
+        subFolder: this.subFolder, //"footer",
+        adInfo: {adId: ""},
+        ecInfo: {
+            memberID: newIds.uid
         }
     };
 

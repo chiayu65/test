@@ -178,505 +178,6 @@
 
 /* 6 */
 
-/* globals window, HTMLElement */
-
-/**!
- * is
- * the definitive JavaScript type testing library
- *
- * @copyright 2013-2014 Enrico Marino / Jordan Harband
- * @license MIT
- */
-
-/**
- * Test general.
- */
-
-/**
- * is.type
- * Test if `value` is a type of `type`.
- *
- * @param {*} value value to test
- * @param {String} type type
- * @return {Boolean} true if `value` is a type of `type`, false otherwise
- * @api public
- */
-
-/**
- * is.defined
- * Test if `value` is defined.
- *
- * @param {*} value value to test
- * @return {Boolean} true if 'value' is defined, false otherwise
- * @api public
- */
-
-/**
- * is.empty
- * Test if `value` is empty.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is empty, false otherwise
- * @api public
- */
-
-/**
- * is.equal
- * Test if `value` is equal to `other`.
- *
- * @param {*} value value to test
- * @param {*} other value to compare with
- * @return {Boolean} true if `value` is equal to `other`, false otherwise
- */
-
-/**
- * is.hosted
- * Test if `value` is hosted by `host`.
- *
- * @param {*} value to test
- * @param {*} host host to test with
- * @return {Boolean} true if `value` is hosted by `host`, false otherwise
- * @api public
- */
-
-/**
- * is.instance
- * Test if `value` is an instance of `constructor`.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an instance of `constructor`
- * @api public
- */
-
-/**
- * is.nil / is.null
- * Test if `value` is null.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is null, false otherwise
- * @api public
- */
-
-/**
- * is.undef / is.undefined
- * Test if `value` is undefined.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is undefined, false otherwise
- * @api public
- */
-
-/**
- * Test arguments.
- */
-
-/**
- * is.args
- * Test if `value` is an arguments object.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an arguments object, false otherwise
- * @api public
- */
-
-/**
- * Test array.
- */
-
-/**
- * is.array
- * Test if 'value' is an array.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an array, false otherwise
- * @api public
- */
-
-/**
- * is.arguments.empty
- * Test if `value` is an empty arguments object.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an empty arguments object, false otherwise
- * @api public
- */
-
-/**
- * is.array.empty
- * Test if `value` is an empty array.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an empty array, false otherwise
- * @api public
- */
-
-/**
- * is.arraylike
- * Test if `value` is an arraylike object.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an arguments object, false otherwise
- * @api public
- */
-
-/**
- * Test boolean.
- */
-
-/**
- * is.bool
- * Test if `value` is a boolean.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a boolean, false otherwise
- * @api public
- */
-
-/**
- * is.false
- * Test if `value` is false.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is false, false otherwise
- * @api public
- */
-
-/**
- * is.true
- * Test if `value` is true.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is true, false otherwise
- * @api public
- */
-
-/**
- * Test date.
- */
-
-/**
- * is.date
- * Test if `value` is a date.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a date, false otherwise
- * @api public
- */
-
-/**
- * is.date.valid
- * Test if `value` is a valid date.
- *
- * @param {*} value value to test
- * @returns {Boolean} true if `value` is a valid date, false otherwise
- */
-
-/**
- * Test element.
- */
-
-/**
- * is.element
- * Test if `value` is an html element.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an HTML Element, false otherwise
- * @api public
- */
-
-/**
- * Test error.
- */
-
-/**
- * is.error
- * Test if `value` is an error object.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an error object, false otherwise
- * @api public
- */
-
-/**
- * Test function.
- */
-
-/**
- * is.fn / is.function (deprecated)
- * Test if `value` is a function.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a function, false otherwise
- * @api public
- */
-
-/**
- * Test number.
- */
-
-/**
- * is.number
- * Test if `value` is a number.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a number, false otherwise
- * @api public
- */
-
-/**
- * is.infinite
- * Test if `value` is positive or negative infinity.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is positive or negative Infinity, false otherwise
- * @api public
- */
-
-/**
- * is.decimal
- * Test if `value` is a decimal number.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a decimal number, false otherwise
- * @api public
- */
-
-/**
- * is.divisibleBy
- * Test if `value` is divisible by `n`.
- *
- * @param {Number} value value to test
- * @param {Number} n dividend
- * @return {Boolean} true if `value` is divisible by `n`, false otherwise
- * @api public
- */
-
-/**
- * is.integer
- * Test if `value` is an integer.
- *
- * @param value to test
- * @return {Boolean} true if `value` is an integer, false otherwise
- * @api public
- */
-
-/**
- * is.maximum
- * Test if `value` is greater than 'others' values.
- *
- * @param {Number} value value to test
- * @param {Array} others values to compare with
- * @return {Boolean} true if `value` is greater than `others` values
- * @api public
- */
-
-/**
- * is.minimum
- * Test if `value` is less than `others` values.
- *
- * @param {Number} value value to test
- * @param {Array} others values to compare with
- * @return {Boolean} true if `value` is less than `others` values
- * @api public
- */
-
-/**
- * is.nan
- * Test if `value` is not a number.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is not a number, false otherwise
- * @api public
- */
-
-/**
- * is.even
- * Test if `value` is an even number.
- *
- * @param {Number} value value to test
- * @return {Boolean} true if `value` is an even number, false otherwise
- * @api public
- */
-
-/**
- * is.odd
- * Test if `value` is an odd number.
- *
- * @param {Number} value value to test
- * @return {Boolean} true if `value` is an odd number, false otherwise
- * @api public
- */
-
-/**
- * is.ge
- * Test if `value` is greater than or equal to `other`.
- *
- * @param {Number} value value to test
- * @param {Number} other value to compare with
- * @return {Boolean}
- * @api public
- */
-
-/**
- * is.gt
- * Test if `value` is greater than `other`.
- *
- * @param {Number} value value to test
- * @param {Number} other value to compare with
- * @return {Boolean}
- * @api public
- */
-
-/**
- * is.le
- * Test if `value` is less than or equal to `other`.
- *
- * @param {Number} value value to test
- * @param {Number} other value to compare with
- * @return {Boolean} if 'value' is less than or equal to 'other'
- * @api public
- */
-
-/**
- * is.lt
- * Test if `value` is less than `other`.
- *
- * @param {Number} value value to test
- * @param {Number} other value to compare with
- * @return {Boolean} if `value` is less than `other`
- * @api public
- */
-
-/**
- * is.within
- * Test if `value` is within `start` and `finish`.
- *
- * @param {Number} value value to test
- * @param {Number} start lower bound
- * @param {Number} finish upper bound
- * @return {Boolean} true if 'value' is is within 'start' and 'finish'
- * @api public
- */
-
-/**
- * Test object.
- */
-
-/**
- * is.object
- * Test if `value` is an object.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is an object, false otherwise
- * @api public
- */
-
-/**
- * is.primitive
- * Test if `value` is a primitive.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a primitive, false otherwise
- * @api public
- */
-
-/**
- * is.hash
- * Test if `value` is a hash - a plain object literal.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a hash, false otherwise
- * @api public
- */
-
-/**
- * Test regexp.
- */
-
-/**
- * is.regexp
- * Test if `value` is a regular expression.
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a regexp, false otherwise
- * @api public
- */
-
-/**
- * Test string.
- */
-
-/**
- * is.string
- * Test if `value` is a string.
- *
- * @param {*} value value to test
- * @return {Boolean} true if 'value' is a string, false otherwise
- * @api public
- */
-
-/**
- * Test base64 string.
- */
-
-/**
- * is.base64
- * Test if `value` is a valid base64 encoded string.
- *
- * @param {*} value value to test
- * @return {Boolean} true if 'value' is a base64 encoded string, false otherwise
- * @api public
- */
-
-/**
- * is.hex
- * Test if `value` is a valid hex encoded string.
- *
- * @param {*} value value to test
- * @return {Boolean} true if 'value' is a hex encoded string, false otherwise
- * @api public
- */
-
-/**
- * is.symbol
- * Test if `value` is an ES6 Symbol
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a Symbol, false otherise
- * @api public
- */
-
-/**
- * is.bigint
- * Test if `value` is an ES-proposed BigInt
- *
- * @param {*} value value to test
- * @return {Boolean} true if `value` is a BigInt, false otherise
- * @api public
- */
-
-// eslint-disable-next-line valid-typeof
-
-/* 7 */
-
-/**
- * Parse the given query `str`.
- *
- * @param {String} str
- * @return {Object}
- * @api public
- */
-
-/**
- * Stringify the given `obj`.
- *
- * @param {Object} obj
- * @return {String}
- * @api public
- */
-
-/* 8 */
-
 /**
  * Parse the given `url`.
  *
@@ -717,7 +218,7 @@
  * @api public
  */
 
-/* 9 */
+/* 7 */
 
 /**
  * Deeply clone an object.
@@ -729,7 +230,7 @@
 
 // from millermedeiros/amd-utils - MIT
 
-/* 10 */
+/* 8 */
 
 /*! JSON v3.3.2 | https://bestiejs.github.io/json3 | Copyright 2012-2015, Kit Cambridge, Benjamin Tan | http://kit.mit-license.org */
 
@@ -1175,7 +676,7 @@
 
 // Export for asynchronous module loaders.
 
-/* 11 */
+/* 9 */
 
 // This works in non-strict mode
 
@@ -1189,13 +690,13 @@
 
 // easier to handle this case. if(!global) { ...}
 
-/* 12 */
+/* 10 */
 
 // after first error, rest are passed to err_cb
 
 // future error callbacks will go to error handler
 
-/* 13 */
+/* 11 */
 
 /**
  * Initialize a new `Emitter`.
@@ -1276,7 +777,7 @@
  * @api public
  */
 
-/* 14 */
+/* 12 */
 
 /**
  * Get the top domain.
@@ -1327,23 +828,25 @@
  * Expose cookie on domain.
  */
 
-/* 15 */
+/* 13 */
 
 /* harmony import */
 
-/* 16 */
+/* 14 */
 
-/* 17 */
+/* 15 */
 
 // this.accountId = config.accountId;//AW-696901813
 
 // https://developers.google.com/gtagjs/reference/event
 
+// check event could be sent
+
 // prepare payload
 
 // rudderElement["message"]["name"]
 
-/* 18 */
+/* 16 */
 
 // Context class
 
@@ -1365,11 +868,11 @@
 
 // server-side integration
 
-/* 19 */
+/* 17 */
 
 // Application class
 
-/* 20 */
+/* 18 */
 
 /**
  * toString ref.
@@ -1387,7 +890,7 @@
 
 // code borrowed from https://github.com/feross/is-buffer/blob/master/index.js
 
-/* 21 */
+/* 19 */
 
 /**
  * Load `namespaces`.
@@ -1475,7 +978,7 @@
  * Colors.
  */
 
-/* 22 */
+/* 20 */
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1558,7 +1061,7 @@
  * Previous log timestamp.
  */
 
-/* 23 */
+/* 21 */
 
 /**
  * Helpers.
@@ -1597,7 +1100,7 @@
  * @api private
  */
 
-/* 24 */
+/* 22 */
 
 /**
  * Produce a new array composed of all but the first `n` elements of an input `collection`.
@@ -1621,7 +1124,7 @@
 
 // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
 
-/* 25 */
+/* 23 */
 
 /**
  * Produce a new array by passing each value in the input `collection` through a transformative
@@ -1636,17 +1139,17 @@
  * rest([1, 2, 3]); // => [2, 3]
  */
 
-/* 26 */
+/* 24 */
 
 // module.parent = undefined by default
 
-/* 27 */
+/* 25 */
 
 /* globals __webpack_amd_options__ */
 
-/* 28 */
+/* 26 */
 
-/* 29 */
+/* 27 */
 
 // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
 
@@ -1660,7 +1163,7 @@
 
 // double check webkit in userAgent just in case we are in a worker
 
-/* 30 */
+/* 28 */
 
 /**
  * Select a color.
@@ -1685,7 +1188,7 @@
  * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
  */
 
-/* 31 */
+/* 29 */
 
 /**
  * Parse or format the given `val`.
@@ -1709,11 +1212,7 @@
  * @api private
  */
 
-/* 32 */
-
-/* 33 */
-
-/* 34 */
+/* 30 */
 
 // ESM COMPAT FLAG
 
@@ -1897,7 +1396,7 @@
    * @param string value
    */
 
-// EXTERNAL MODULE: ./node_modules/is/index.js
+// CONCATENATED MODULE: ./integrations/ScriptLoader.js
 
 // CONCATENATED MODULE: ./integrations/index.js
 

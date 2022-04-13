@@ -1,24 +1,27 @@
-import logger from "../../utils/logUtil";
-
 class CompassPixel {
   constructor(config) {
     this.advId = config.advId;//AW-696901813
     this.conversions = config.conversions || [];
+    this.excludes = config.excludes || [];
     this.name = "CompassPixel";
   }
 
   init() {
-    logger.debug("===in init CompassPixel ===");
+    console.log("===in init CompassPixel ===");
   }
 
   identify(rudderElement) {
-    logger.debug("[CompassPixel] identify:: method not supported");
+    console.log("[CompassPixel] identify:: method not supported");
   }
 
   track(rudderElement) {
     console.log("in CompassPixel track");
     const msg = rudderElement.message;
     const ev = msg.event;
+
+    if (!this.canSendEvent(ev))
+      return;
+
     const cv = this.getConversion(ev);
     if (cv === false)
       return;
@@ -35,6 +38,10 @@ class CompassPixel {
 
   page(rudderElement) {
     console.log("in CompassPixel page");
+
+    if (!this.canSendEvent('PageView'))
+      return;
+
     (function () {
       var _lgy     = document.createElement('script');
       var _lgy_adv = 1639;
@@ -69,6 +76,10 @@ class CompassPixel {
 
   isReady() {
     return true;
+  }
+
+  canSendEvent(ev) {
+    return this.excludes.indexOf(ev) === -1;
   }
 }
 
