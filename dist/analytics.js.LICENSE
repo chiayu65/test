@@ -1410,7 +1410,7 @@
 
 // enables fb
 
-// const payload = props;
+// is using alias to send event
 
 // CONCATENATED MODULE: ./integrations/FacebookPixel/index.js
 

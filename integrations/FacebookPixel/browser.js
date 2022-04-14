@@ -8,6 +8,7 @@ class FacebookPixel {
     this.enableDPA = config.enableDPA || false;
     this.contentType = config.contentType || 'product';
     this.excludes = config.excludes || [];
+    this.conversions = config.conversions || [];
     this.standEventsReg = /^(AddPaymentInfo|AddToCart|AddToWishlist|CompleteRegistration|Contact|CustomizeProduct|Donate|FindLocation|InitiateCheckout|Lead|PageView|Purchase|Schedule|Search|StartTrial|SubmitApplication|Subscribe|ViewContent)$/;
   }
 
@@ -105,13 +106,29 @@ class FacebookPixel {
         payload = props;
     }
 
-    // const payload = props;
-    this.send(msg.event, payload, options);
+    // is using alias to send event
+    const conv = this.getConversion(msg.event);
+    let ev = (conv) ? conv.alias : msg.event;
+    this.send(ev, payload, options);
   }
 
   send(event, payload, options) {
       const track = (this.standEventsReg.test(event)) ? 'trackSingle' : 'trackSingleCustom';
       window.fbq(track, this.pixelId, event, payload, options);
+  }
+
+  getConversion(event) {
+    const cvs = this.conversions;
+    if (cvs.length == 0)
+      return false;
+
+    for(let i=0; i<cvs.length; i++) {
+      const cv = cvs[i];
+      if (cv.event == event)
+        return cv;
+    }
+
+    return false;
   }
 
   canSendEvent(ev) {
