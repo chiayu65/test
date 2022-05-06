@@ -2,9 +2,7 @@ class GoogleAds {
   constructor(config) {
     // this.accountId = config.accountId;//AW-696901813
     this.conversionId = config.conversionID;
-    this.pageLoadConversions = config.pageLoadConversions;
-    this.clickEventConversions = config.clickEventConversions;
-    this.defaultPageConversion = config.defaultPageConversion;
+    this.conversions = config.conversions;
     this.excludes = config.excludes || [];
     this.name = "GOOGLEADS";
   }
@@ -59,9 +57,6 @@ class GoogleAds {
       } else {
         payload = props;
       }
-
-      if (event == 'Purchase')
-        payload['transaction_id'] = props['order_id'];
     } else {
       if (event == 'Search')
         payload = {search_string: props.keyword};
@@ -69,19 +64,14 @@ class GoogleAds {
         payload = props;
     }
 
-    const conversionData = this.getConversionData(
-      this.clickEventConversions,
-      event
-    );
+    const cv = this.getConversion(event);
 
-    if (conversionData.conversionLabel) {
-      const { conversionLabel } = conversionData;
-      sentTo += '/' + conversionLabel;
+    if (cv.label) {
+      sentTo += '/' + cv.label;
     }
 
     payload['user_id'] = identities.uid;
     payload['send_to'] = sentTo;
-    console.log(payload);
     window.gtag("event", event, payload);
   }
 
@@ -89,51 +79,31 @@ class GoogleAds {
     console.log("in GoogleAdsAnalyticsManager page");
     const msg = rudderElement.message;
     const identities = msg.identities;
-    const conversionData = this.getConversionData(
-      this.pageLoadConversions,
-      rudderElement.message.name
-    );
-
-    let sentTo = this.conversionId,
-        eventName = 'PageView';
-
-    if (conversionData.conversionLabel) {
-      const { conversionLabel } = conversionData;
-      const { eventName } = conversionData;
-      sentTo += '/' + conversionLabel;
-    }
+    const ev = 'PageView';
 
     let props = {
       send_to: sentTo,
       user_id: identities.uid
     };
 
-    if (!this.canSendEvent('PageView'))
+    if (!this.canSendEvent(ev))
       return;
 
-    window.gtag("event", eventName, props);
+    window.gtag("event", ev, props);
   }
 
-  getConversionData(eventTypeConversions, eventName) {
-    const conversionData = {};
-    if (eventTypeConversions) {
-      if (eventName) {
-        eventTypeConversions.forEach((eventTypeConversion) => {
-          if (
-            eventTypeConversion.name === eventName
-          ) {
-            // rudderElement["message"]["name"]
-            conversionData.conversionLabel =
-              eventTypeConversion.conversionLabel;
-            conversionData.eventName = eventTypeConversion.name;
-          }
-        });
-      } else if (this.defaultPageConversion) {
-        conversionData.conversionLabel = this.defaultPageConversion;
-        conversionData.eventName = "PageView";
-      }
+  getConversion(event) {
+    const cvs = this.conversions;
+    if (cvs.length == 0)
+      return false;
+
+    for(let i=0; i<cvs.length; i++) {
+      const cv = cvs[i];
+      if (cv.event == event)
+        return cv;
     }
-    return conversionData;
+
+    return false;
   }
 
   isLoaded() {
