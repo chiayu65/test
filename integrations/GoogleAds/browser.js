@@ -2,7 +2,7 @@ class GoogleAds {
   constructor(config) {
     // this.accountId = config.accountId;//AW-696901813
     this.conversionId = config.conversionID;
-    this.conversions = config.conversions;
+    this.conversions = config.conversions || [];
     this.excludes = config.excludes || [];
     this.name = "GOOGLEADS";
   }
@@ -48,7 +48,7 @@ class GoogleAds {
 
     const identities = msg.identities;
     let sentTo = this.conversionId;
-    let payload = {};
+    let payload = {user_id: identities.uid, send_to: sentTo};
 
     // prepare payload
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
@@ -65,13 +65,11 @@ class GoogleAds {
     }
 
     const cv = this.getConversion(event);
-
     if (cv.label) {
-      sentTo += '/' + cv.label;
+      payload.send_to += '/' + cv.label;
+      event = 'conversion';
     }
 
-    payload['user_id'] = identities.uid;
-    payload['send_to'] = sentTo;
     window.gtag("event", event, payload);
   }
 
@@ -79,8 +77,8 @@ class GoogleAds {
     console.log("in GoogleAdsAnalyticsManager page");
     const msg = rudderElement.message;
     const identities = msg.identities;
-    const ev = 'PageView';
-
+    const sentTo = this.conversionId;
+    let ev = 'PageView';
     let props = {
       send_to: sentTo,
       user_id: identities.uid
@@ -88,6 +86,12 @@ class GoogleAds {
 
     if (!this.canSendEvent(ev))
       return;
+
+    const cv = this.getConversion(ev);
+    if (cv.label) {
+      props.send_to += '/' + cv.label;
+      ev = 'conversion';
+    }
 
     window.gtag("event", ev, props);
   }
