@@ -40,15 +40,14 @@ class GoogleAds {
     console.log("in GoogleAdsAnalyticsManager track");
     const msg = rudderElement.message;
     const props = msg.properties;
-    const event = msg.event;
+    const identities = msg.identities;
+    let sentTo = this.conversionId;
+    let payload = {user_id: identities.uid, send_to: sentTo};
+    let event = msg.event;
 
     // check event could be sent
     if (!this.canSendEvent(event))
       return;
-
-    const identities = msg.identities;
-    let sentTo = this.conversionId;
-    let payload = {user_id: identities.uid, send_to: sentTo};
 
     // prepare payload
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
