@@ -51,16 +51,23 @@ class GoogleAds {
 
     // prepare payload
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
-      if (/InitiateCheckout|AddPaymentInfo/.test(event) != false) {
-        payload = {items: [props]};
+      if (/InitiateCheckout|AddPaymentInfo|Purchase/.test(event) != false) {
+        for(var name in props) {
+          if (name == 'contents')
+            payload['items'] = props[name];
+          else
+            payload[name] = props[name];
+        }
       } else {
-        payload = props;
+        for(var name in props)
+          payload[name] = props[name];
       }
     } else {
       if (event == 'Search')
-        payload = {search_string: props.keyword};
+        payload['search_string'] = props.keyword;
       else
-        payload = props;
+        for(var name in props)
+          payload[name] = props[name];
     }
 
     const cv = this.getConversion(event);
@@ -118,6 +125,9 @@ class GoogleAds {
   }
 
   canSendEvent(ev) {
+    if (this.excludes.length === 0)
+      return true;
+
     return this.excludes.indexOf(ev) === -1;
   }
 }

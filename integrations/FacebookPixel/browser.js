@@ -132,6 +132,9 @@ class FacebookPixel {
   }
 
   canSendEvent(ev) {
+    if (this.excludes.length === 0)
+      return true;
+
     return this.excludes.indexOf(ev) === -1;
   }
 }
