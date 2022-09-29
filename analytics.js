@@ -958,7 +958,6 @@ const load = instance.load.bind(instance);
 const initialized = (instance.initialized = true);
 const getAnonymousId = instance.getAnonymousId.bind(instance);
 
-
 export {
   initialized,
   ready,

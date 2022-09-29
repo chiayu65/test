@@ -1,6 +1,6 @@
 class CompassPixel {
   constructor(config) {
-    this.advId = config.advId;//AW-696901813
+    this.advId = config.advId;
     this.conversions = config.conversions || [];
     this.excludes = config.excludes || [];
     this.name = "CompassPixel";
@@ -8,6 +8,18 @@ class CompassPixel {
 
   init() {
     console.log("===in init CompassPixel ===");
+    (function () {
+      var _lgy     = document.createElement('script');
+      var _lgy_adv = this.advId;
+      window._lgy_advs = window._lgy_advs || {};
+      window._lgy_advs[_lgy_adv] = false;
+      window._lgy_options = window._lgy_options || {};
+      window._lgy_options[_lgy_adv] = {};
+      _lgy.async = true;
+      _lgy.src = 'https://send.mad-infeed.jp/seg.js';
+      var _lgy0 = document.getElementsByTagName('script')[0];
+      _lgy0.parentNode.insertBefore(_lgy, _lgy0);
+    })();
   }
 
   identify(rudderElement) {
@@ -39,21 +51,7 @@ class CompassPixel {
   page(rudderElement) {
     console.log("in CompassPixel page");
 
-    if (!this.canSendEvent('PageView'))
-      return;
-
-    (function () {
-      var _lgy     = document.createElement('script');
-      var _lgy_adv = 1639;
-      window._lgy_advs = window._lgy_advs || {};
-      window._lgy_advs[_lgy_adv] = false;
-      window._lgy_options = window._lgy_options || {};
-      window._lgy_options[_lgy_adv] = {};
-      _lgy.async = true;
-      _lgy.src = 'https://dsp.logly.co.jp/seg.js';
-      var _lgy0 = document.getElementsByTagName('script')[0];
-      _lgy0.parentNode.insertBefore(_lgy, _lgy0);
-    })();
+    // this.track(rudderElement);
   }
 
   getConversion(event) {
