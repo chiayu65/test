@@ -56,6 +56,40 @@
 
 /* 2 */
 
+// shim for using process in browser
+
+// cached from whatever global is present so that test runners that stub it
+
+// don't break things.  But we need to wrap it in a try catch in case it is
+
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+
+// function because try/catches deoptimize in certain engines.
+
+//normal enviroments in sane situations
+
+// if setTimeout wasn't available but was latter defined
+
+// when when somebody has screwed with setTimeout but no I.E. maddness
+
+// When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+
+// same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+
+// if clearTimeout wasn't available but was latter defined
+
+// When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+
+// same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+
+// Some versions of I.E. have different rules for clearTimeout vs setTimeout
+
+// v8 likes predictible objects
+
+// empty string to avoid regexp issues
+
+/* 3 */
+
 /*
  * Module dependencies.
  */
@@ -70,7 +104,7 @@
  * Exports.
  */
 
-/* 3 */
+/* 4 */
 
 /**
  * Module dependencies.
@@ -126,7 +160,7 @@
  * @api private
  */
 
-/* 4 */
+/* 5 */
 
 /* harmony export (binding) */
 
@@ -141,40 +175,6 @@
 // Screen information class
 
 // Device information class
-
-/* 5 */
-
-// shim for using process in browser
-
-// cached from whatever global is present so that test runners that stub it
-
-// don't break things.  But we need to wrap it in a try catch in case it is
-
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-
-// function because try/catches deoptimize in certain engines.
-
-//normal enviroments in sane situations
-
-// if setTimeout wasn't available but was latter defined
-
-// when when somebody has screwed with setTimeout but no I.E. maddness
-
-// When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-
-// same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-
-// if clearTimeout wasn't available but was latter defined
-
-// When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-
-// same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-
-// Some versions of I.E. have different rules for clearTimeout vs setTimeout
-
-// v8 likes predictible objects
-
-// empty string to avoid regexp issues
 
 /* 6 */
 
@@ -846,6 +846,14 @@
 
 /* 16 */
 
+/* 17 */
+
+/* unused harmony export GoogleAdsNode */
+
+/* 18 */
+
+/* 19 */
+
 // Context class
 
 // this.os = null;
@@ -866,11 +874,11 @@
 
 // server-side integration
 
-/* 17 */
+/* 20 */
 
 // Application class
 
-/* 18 */
+/* 21 */
 
 /**
  * toString ref.
@@ -888,7 +896,7 @@
 
 // code borrowed from https://github.com/feross/is-buffer/blob/master/index.js
 
-/* 19 */
+/* 22 */
 
 /**
  * Load `namespaces`.
@@ -976,7 +984,7 @@
  * Colors.
  */
 
-/* 20 */
+/* 23 */
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -1059,7 +1067,7 @@
  * Previous log timestamp.
  */
 
-/* 21 */
+/* 24 */
 
 /**
  * Helpers.
@@ -1098,7 +1106,7 @@
  * @api private
  */
 
-/* 22 */
+/* 25 */
 
 /**
  * Produce a new array composed of all but the first `n` elements of an input `collection`.
@@ -1122,7 +1130,7 @@
 
 // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
 
-/* 23 */
+/* 26 */
 
 /**
  * Produce a new array by passing each value in the input `collection` through a transformative
@@ -1137,17 +1145,17 @@
  * rest([1, 2, 3]); // => [2, 3]
  */
 
-/* 24 */
+/* 27 */
 
 // module.parent = undefined by default
 
-/* 25 */
+/* 28 */
 
 /* globals __webpack_amd_options__ */
 
-/* 26 */
+/* 29 */
 
-/* 27 */
+/* 30 */
 
 // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
 
@@ -1161,7 +1169,7 @@
 
 // double check webkit in userAgent just in case we are in a worker
 
-/* 28 */
+/* 31 */
 
 /**
  * Select a color.
@@ -1186,7 +1194,7 @@
  * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
  */
 
-/* 29 */
+/* 32 */
 
 /**
  * Parse or format the given `val`.
@@ -1210,7 +1218,7 @@
  * @api private
  */
 
-/* 30 */
+/* 33 */
 
 // ESM COMPAT FLAG
 
@@ -1396,11 +1404,7 @@
 
 // CONCATENATED MODULE: ./integrations/ScriptLoader.js
 
-// CONCATENATED MODULE: ./integrations/index.js
-
-// the key names should match the destination.name value to keep partity everywhere
-
-// (config-plan name, native destination.name , exported integration name(this one below))
+// CONCATENATED MODULE: ./integrations/FacebookPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/FacebookPixel/browser.js
 
@@ -1410,11 +1414,13 @@
 
 // is using alias to send event
 
-// CONCATENATED MODULE: ./integrations/FacebookPixel/index.js
-
 // CONCATENATED MODULE: ./integrations/CyntelliPixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/CyntelliPixel/index.js
+
+// EXTERNAL MODULE: ./integrations/GoogleAds/index.js
+
+// CONCATENATED MODULE: ./integrations/ElandPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/ElandPixel/browser.js
 
@@ -1422,21 +1428,29 @@
 
 //"footer",
 
-// CONCATENATED MODULE: ./integrations/ElandPixel/index.js
-
 // CONCATENATED MODULE: ./integrations/LinePixel/browser.js
 
-//AW-696901813
-
 // CONCATENATED MODULE: ./integrations/LinePixel/index.js
+
+//AW-696901813
 
 // CONCATENATED MODULE: ./integrations/CompassPixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/CompassPixel/index.js
 
+// this.track(rudderElement);
+
 // CONCATENATED MODULE: ./integrations/AmobeePixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/AmobeePixel/index.js
+
+// EXTERNAL MODULE: ./integrations/DV360Pixel/index.js
+
+// CONCATENATED MODULE: ./integrations/index.js
+
+// the key names should match the destination.name value to keep partity everywhere
+
+// (config-plan name, native destination.name , exported integration name(this one below))
 
 // EXTERNAL MODULE: ./utils/RudderContext.js
 

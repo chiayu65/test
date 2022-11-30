@@ -5,6 +5,7 @@ import * as ElandPixel from "./ElandPixel";
 import * as LinePixel from "./LinePixel";
 import * as CompassPixel from "./CompassPixel";
 import * as AmobeePixel from "./AmobeePixel";
+import * as DV360Pixel from "./DV360Pixel";
 
 // the key names should match the destination.name value to keep partity everywhere
 // (config-plan name, native destination.name , exported integration name(this one below))
@@ -16,7 +17,8 @@ const integrations = {
   ELAND_PIXEL: ElandPixel.default,
   LINE_PIXEL: LinePixel.default,
   COMPASS_PIXEL: CompassPixel.default,
-  AMOBEE_PIXEL: AmobeePixel.default
+  AMOBEE_PIXEL: AmobeePixel.default,
+  DV360: DV360Pixel.default
 };
 
 export { integrations };
