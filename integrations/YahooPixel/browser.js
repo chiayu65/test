@@ -3,24 +3,24 @@ class YahooPixel  {
   constructor(config) {
     this.name = "YAHOO_PIXEL";
     this.pixelId = config.pixelId;
-    this.advId = config.advId;
+    // this.advId = config.advId;
     this.queueName = 'dotq_' + config.pixelId;
     this.conversions = config.conversions || [];
   }
 
   init() {
-    console.log("===in init YahooPixel ===");
-    (function(w,d,t,r,u){w[u]=w[u]||[];w[u].push({projectId:"10000",properties:{pixelId:this.pixelId}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js",this.queueName);
+    console.log("===in init YahooPixel (" + this.queueName + ") ===");
+    (function(w,d,t,r,u,p){w[u]=w[u]||[];w[u].push({projectId:"10000",properties:{pixelId:p}});var s=d.createElement(t);s.src=r;s.async=true;s.onload=s.onreadystatechange=function(){var y,rs=this.readyState,c=w[u];if(rs&&rs!="complete"&&rs!="loaded"){return}try{y=YAHOO.ywa.I13N.fireBeacon;w[u]=[];w[u].push=function(p){y([p])};y(c)}catch(e){}};var scr=d.getElementsByTagName(t)[0],par=scr.parentNode;par.insertBefore(s,scr)})(window,document,"script","https://s.yimg.com/wi/ytc.js",this.queueName, this.pixelId);
   }
 
   isLoaded() {
-    console.log("in YahooPixel  (" + this.pixelId + ") isLoaded");
-    return !!(window[this.queueName] && window[this.queueName].callMethod);
+    console.log("in YahooPixel (" + this.pixelId + ") isLoaded");
+    return window[this.queueName] && window[this.queueName].push !== Array.prototype.push;
   }
 
   isReady() {
-    console.log("in YahooPixel  isReady");
-    return !!(window[this.queueName] && window[this.queueName].callMethod);
+    console.log("in YahooPixel (" + this.queueName + ") isReady");
+    return window[this.queueName] && window[this.queueName].push !== Array.prototype.push;
   }
 
   page(rudderElement) {
@@ -38,7 +38,8 @@ class YahooPixel  {
     const props = msg.properties;
 
     // prepare payload
-    let payload = {el: 'evId:' + msg.messageId, advertiser_id: this.advId};
+    // let payload = {el: 'evId:' + msg.messageId, advertiser_id: this.advId};
+    let payload = {et: 'custom', el: 'evId:' + msg.messageId, ev: msg.event};
     for(var name in props)
       payload[name] = props[name];
 
@@ -56,11 +57,10 @@ class YahooPixel  {
       }
 
       payload['ev'] = ev;
-    } else {
-      payload['ev'] = msg.event;
     }
 
     this.send(payload);
+    console.log("in YahooPixel (" + this.queueName + ") track");
   }
 
   send(payload) {

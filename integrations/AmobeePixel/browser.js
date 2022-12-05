@@ -40,7 +40,6 @@ class AmobeePixel {
   }
 
   track(rudderElement) {
-    console.log('Amobee send track event');
     const msg = rudderElement.message;
     const event = msg.event;
 
@@ -60,6 +59,7 @@ class AmobeePixel {
     img.style = 'display:none';
     img.src = 'https://r.turn.com/r/beacon?b2=' + cv.label;
     window.document.body.appendChild(img);
+    console.log("in AmobeePixel (" + cv.label + ") track");
   }
 
   getConversion(event) {

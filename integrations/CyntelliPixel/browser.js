@@ -49,11 +49,11 @@ class CyntelliPixel {
   }
 
   identify(rudderElement) {
-
+    console.log('CyntelliPixel cann\'t support identify method');
+    return;
   }
 
   track(rudderElement) {
-    console.log('Cyntelli send track event');
     const msg = rudderElement.message;
     const pageProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
@@ -68,6 +68,7 @@ class CyntelliPixel {
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
     this.sendRequest(data);
+    console.log("in CyntelliPixel (" + this.pvId + ':' + this.pId + ") track");
   }
 
   merge(obj1, obj2) {
@@ -88,14 +89,6 @@ class CyntelliPixel {
     });
 
     return result;
-  }
-
-  formatRevenue(revenue) {
-    return Number(revenue || 0).toFixed(2);
-  }
-
-  buildPayLoad(rudderElement, isStandardEvent) {
-
   }
 
   buildParams(prefix, object) {

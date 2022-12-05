@@ -9,28 +9,22 @@ class BingPixel {
 
   init() {
     console.log("===in init BingPixel===");
-    (function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[] ,f=function(){var o={ti:this.pixelId}; o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")} ,n=d.createElement(t),n.src=r,n.async=1,n.onload=n .onreadystatechange=function() {var s=this.readyState;s &&s!=="loaded"&& s!=="complete"||(f(),n.onload=n. onreadystatechange=null)},i= d.getElementsByTagName(t)[0],i. parentNode.insertBefore(n,i)})(window,document,"script"," //bat.bing.com/bat.js",this.queueName);
+    (function(w,d,t,r,u,p){var f,n,i;w[u]=w[u]||[] ,f=function(){var o={ti:p}; o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")} ,n=d.createElement(t),n.src=r,n.async=1,n.onload=n .onreadystatechange=function() {var s=this.readyState;s &&s!=="loaded"&& s!=="complete"||(f(),n.onload=n. onreadystatechange=null)},i= d.getElementsByTagName(t)[0],i. parentNode.insertBefore(n,i)})(window,document,"script"," //bat.bing.com/bat.js",this.queueName, this.pixelId);
   }
 
   isLoaded() {
-    console.log("in BingPixel (" + this.pixelId + ") isLoaded");
-    return !!(window[this.queueName] && window[this.queueName].callMethod);
+    console.log("in BingPixel (" + this.queueName + ") isLoaded");
+    return window[this.queueName] && window[this.queueName].push !== Array.prototype.push;
   }
 
   isReady() {
-    console.log("in BingPixel isReady");
-    return !!(window[this.queueName] && window[this.queueName].callMethod);
+    console.log("in BingPixel(" + this.queueName + ") isReady");
+    return this.isLoaded();
   }
 
   page(rudderElement) {
-    const msg = rudderElement.message;
-    const identities = msg.identities
-    const payload = {event_label: 'evId:' + msg.messageId};
-
-    // is using alias to send event
-    const conv = this.getConversion('PageView');
-    let ev = (conv) ? conv.alias : msg.event;
-    this.send('PageView', payload);
+    rudderElement.message.event = 'PageView';
+    this.track(rudderElement);
   }
 
   identify(rudderElement) {
@@ -43,24 +37,24 @@ class BingPixel {
     const props = msg.properties;
 
     // prepare payload
-    let payload = {event_label: 'evId:' + msg.messageId};
+    let payload = {event_label: 'evId:' + msg.messageId},
+        ev = msg.event;
     for(var name in props)
       payload[name] = props[name];
 
     // is using alias to send event
     const conv = this.getConversion(msg.event);
     if (conv) {
-      let ev = (conv) ? conv.alias : msg.event;
+      ev = (conv) ? conv.alias : msg.event;
       if (conv['ea'])
         payload['event_action'] = conv['ea'];
 
       if (conv['ec'])
         payload['event_category'] = conv['ec'];
-    } else {
-      ev = msg.event;
     }
 
     this.send(ev, payload, {});
+    console.log("in BingPixel (" + this.queueName + ") track");
   }
 
   send(event, payload, options) {

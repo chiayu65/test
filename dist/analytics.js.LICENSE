@@ -1456,6 +1456,10 @@
 
 // CONCATENATED MODULE: ./integrations/YahooPixel/browser.js
 
+// this.advId = config.advId;
+
+// let payload = {el: 'evId:' + msg.messageId, advertiser_id: this.advId};
+
 // CONCATENATED MODULE: ./integrations/YahooPixel/index.js
 
 // EXTERNAL MODULE: ./utils/RudderContext.js
