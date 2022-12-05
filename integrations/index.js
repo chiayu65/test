@@ -6,6 +6,8 @@ import * as LinePixel from "./LinePixel";
 import * as CompassPixel from "./CompassPixel";
 import * as AmobeePixel from "./AmobeePixel";
 import * as DV360Pixel from "./DV360Pixel";
+import * as BingPixel from "./BingPixel";
+import * as YahooPixel from "./YahooPixel";
 
 // the key names should match the destination.name value to keep partity everywhere
 // (config-plan name, native destination.name , exported integration name(this one below))
@@ -18,7 +20,9 @@ const integrations = {
   LINE_PIXEL: LinePixel.default,
   COMPASS_PIXEL: CompassPixel.default,
   AMOBEE_PIXEL: AmobeePixel.default,
-  DV360: DV360Pixel.default
+  DV360: DV360Pixel.default,
+  BING_PIXEL: BingPixel.default,
+  YAHOO_PIXEL: YahooPixel.default,
 };
 
 export { integrations };

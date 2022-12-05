@@ -848,8 +848,6 @@
 
 /* 17 */
 
-/* unused harmony export GoogleAdsNode */
-
 /* 18 */
 
 /* 19 */
@@ -1451,6 +1449,14 @@
 // the key names should match the destination.name value to keep partity everywhere
 
 // (config-plan name, native destination.name , exported integration name(this one below))
+
+// CONCATENATED MODULE: ./integrations/BingPixel/browser.js
+
+// CONCATENATED MODULE: ./integrations/BingPixel/index.js
+
+// CONCATENATED MODULE: ./integrations/YahooPixel/browser.js
+
+// CONCATENATED MODULE: ./integrations/YahooPixel/index.js
 
 // EXTERNAL MODULE: ./utils/RudderContext.js
 

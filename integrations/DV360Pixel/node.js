@@ -1,6 +1,6 @@
 import logger from "../../utils/logUtil";
 
-class GoogleAdsNode {
+class DV360Node {
   constructor() {
     logger.debug("nothing to construct");
   }
@@ -28,4 +28,4 @@ class GoogleAdsNode {
   }
 }
 
-export { GoogleAdsNode };
+export { DV360Node };
