@@ -46,7 +46,6 @@ class YahooPixel  {
     // is using alias to send event
     const conv = this.getConversion(msg.event);
     if (conv) {
-      let ev = (conv) ? conv.alias : msg.event;
       for(var name in conv) {
         if (name == 'ea' || name == 'ec')
           payload[name] = conv[name];
@@ -56,7 +55,7 @@ class YahooPixel  {
         }
       }
 
-      payload['ev'] = ev;
+      payload['ev'] = (conv.alias) ? conv.alias : payload.ev;
     }
 
     this.send(payload);

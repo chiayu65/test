@@ -26,7 +26,6 @@ class CompassPixel {
   }
 
   track(rudderElement) {
-    console.log("in CompassPixel track");
     const msg = rudderElement.message;
     const ev = msg.event;
 
@@ -45,6 +44,7 @@ class CompassPixel {
     const s0 = document.getElementsByTagName('script')[0];
     s0.parentNode.insertBefore(s, s0);
     // console.log("send conversion of compass: " + src);
+    console.log("in CompassPixel ( " + this.advId + ") track");
   }
 
   page(rudderElement) {

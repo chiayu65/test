@@ -1436,6 +1436,8 @@
 
 // CONCATENATED MODULE: ./integrations/CompassPixel/index.js
 
+// console.log("send conversion of compass: " + src);
+
 // this.track(rudderElement);
 
 // CONCATENATED MODULE: ./integrations/AmobeePixel/browser.js

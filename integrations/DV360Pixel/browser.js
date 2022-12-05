@@ -38,7 +38,6 @@ class DV360 {
 
   // https://developers.google.com/gtagjs/reference/event
   track(rudderElement) {
-    console.log("in DV360Manager track");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;
@@ -63,6 +62,7 @@ class DV360 {
     }
 
     window.gtag("event", event, payload);
+    console.log("in DV360Manager (" + this.conversionId + ") track");
   }
 
   page(rudderElement) {

@@ -43,15 +43,17 @@ class BingPixel {
       payload[name] = props[name];
 
     // is using alias to send event
-    const conv = this.getConversion(msg.event);
+    const conv = this.getConversion(ev);
     if (conv) {
-      ev = (conv) ? conv.alias : msg.event;
+      ev = (conv.alias) ? conv.alias : ev;
       if (conv['ea'])
         payload['event_action'] = conv['ea'];
 
       if (conv['ec'])
         payload['event_category'] = conv['ec'];
     }
+
+    console.log(payload, ev);
 
     this.send(ev, payload, {});
     console.log("in BingPixel (" + this.queueName + ") track");
