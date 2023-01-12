@@ -51,6 +51,9 @@ class BingPixel {
 
       if (conv['ec'])
         payload['event_category'] = conv['ec'];
+
+      if (payload['value']) // 增加轉換價值
+        payload['revenue_value'] = payload['value'];
     }
 
     console.log(payload, ev);

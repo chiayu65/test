@@ -55,6 +55,10 @@ class YahooPixel  {
         }
       }
 
+      // conversion value
+      if (payload['value'])
+        payload['gv'] = payload['value'];
+
       payload['ev'] = (conv.alias) ? conv.alias : payload.ev;
     }
 

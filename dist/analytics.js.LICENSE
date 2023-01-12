@@ -1454,6 +1454,8 @@
 
 // CONCATENATED MODULE: ./integrations/BingPixel/browser.js
 
+// 增加轉換價值
+
 // CONCATENATED MODULE: ./integrations/BingPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/YahooPixel/browser.js
@@ -1461,6 +1463,8 @@
 // this.advId = config.advId;
 
 // let payload = {el: 'evId:' + msg.messageId, advertiser_id: this.advId};
+
+// conversion value
 
 // CONCATENATED MODULE: ./integrations/YahooPixel/index.js
 
