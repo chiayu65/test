@@ -58,9 +58,16 @@ class GoogleAds {
           else
             payload[name] = props[name];
         }
-      } else {
-        for(var name in props)
-          payload[name] = props[name];
+      } else { // ViewContent or AddToCart
+        var items = [];
+        payload = {
+          value: props.value,
+          items: [
+            props
+          ],
+          user_id: identities.uid,
+          send_to: sentTo
+        };
       }
     } else {
       if (event == 'Search')
@@ -71,12 +78,19 @@ class GoogleAds {
     }
 
     const cv = this.getConversion(event);
-    if (cv.label) {
-      payload.send_to += '/' + cv.label;
-      event = 'conversion';
-    }
+    if (cv) {
+      if (cv.label) {
+        payload.send_to += '/' + cv.label;
+        window.gtag("event", 'conversion', payload);
+      }
 
-    window.gtag("event", event, payload);
+      if (cv.alias) {
+        payload['send_to'] = sentTo;
+        window.gtag("event", cv.alias, payload);
+      }
+    } else {
+      window.gtag('event', event, payload);
+    }
   }
 
   page(rudderElement) {
