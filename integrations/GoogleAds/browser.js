@@ -84,10 +84,9 @@ class GoogleAds {
         window.gtag("event", 'conversion', payload);
       }
 
-      if (cv.alias) {
-        payload['send_to'] = sentTo;
-        window.gtag("event", cv.alias, payload);
-      }
+      var ev = (cv.alias) ? cv.alias : event;
+      payload['send_to'] = sentTo;
+      window.gtag('event', ev, payload);
     } else {
       window.gtag('event', event, payload);
     }
