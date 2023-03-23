@@ -77,24 +77,21 @@ class GoogleAds {
           payload[name] = props[name];
     }
 
-    console.log(event);
-
     const cv = this.getConversion(event);
-console.log(event);
 
     if (cv) {
       if (cv.label) {
         payload.send_to += '/' + cv.label;
         window.gtag("event", 'conversion', payload);
-        console.log(cv, 'label');
       }
 
-      var ev = (cv.alias) ? cv.alias : event;
-      payload['send_to'] = sentTo;
-      window.gtag('event', ev, payload);
-      console.log(cv, 'send to');
+      var ev = (cv.alias) ? cv.alias : event,
+          json = JSON.parse(JSON.stringify(payload));
+
+      json['send_to'] = sentTo;
+      window.gtag('event', ev, json);
     } else {
-      window.gtag('event', event, payload);
+      window.gtag('event', event, json);
     }
   }
 
