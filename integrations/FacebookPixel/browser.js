@@ -70,8 +70,7 @@ class FacebookPixel {
   }
 
   identify(rudderElement) {
-    console.log('fb identify');
-    return;
+    return ;
   }
 
   track(rudderElement) {

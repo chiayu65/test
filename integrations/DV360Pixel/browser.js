@@ -33,7 +33,7 @@ class DV360 {
   }
 
   identify(rudderElement) {
-    console.log("[DV360] identify:: method not supported");
+    return ;
   }
 
   // https://developers.google.com/gtagjs/reference/event

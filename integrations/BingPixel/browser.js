@@ -28,8 +28,7 @@ class BingPixel {
   }
 
   identify(rudderElement) {
-    console.log('BingPixel cann\'t support identify method');
-    return;
+    return ;
   }
 
   track(rudderElement) {

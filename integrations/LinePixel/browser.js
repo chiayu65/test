@@ -26,7 +26,7 @@ class LinePixel {
   }
 
   identify(rudderElement) {
-    console.log("[LinePixel] identify:: method not supported");
+    return ;
   }
 
   track(rudderElement) {

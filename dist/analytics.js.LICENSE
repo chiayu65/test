@@ -1468,6 +1468,16 @@
 
 // CONCATENATED MODULE: ./integrations/YahooPixel/index.js
 
+// CONCATENATED MODULE: ./integrations/GA4Pixel/browser.js
+
+// console.log("[GA4] identify:: method not supported");
+
+// set trasaction id
+
+// set value
+
+// CONCATENATED MODULE: ./integrations/GA4Pixel/index.js
+
 // EXTERNAL MODULE: ./utils/RudderContext.js
 
 // CONCATENATED MODULE: ./utils/CyntelliMessage.js

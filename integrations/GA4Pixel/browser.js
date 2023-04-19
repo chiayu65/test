@@ -1,10 +1,9 @@
-class GoogleAds {
+class GA4Pixel {
   constructor(config) {
-    // this.accountId = config.accountId;//AW-696901813
     this.conversionId = config.conversionID;
     this.conversions = config.conversions || [];
     this.excludes = config.excludes || [];
-    this.name = "GOOGLEADS";
+    this.name = "GA4_PIXEL";
   }
 
   init() {
@@ -19,7 +18,7 @@ class GoogleAds {
       const e = document.getElementsByTagName("head")[0];
       console.log("==script==", e);
       e.appendChild(js);
-    })("googleAds-integration", sourceUrl, document);
+    })("google-analytics4-integration", sourceUrl, document);
 
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () {
@@ -28,47 +27,75 @@ class GoogleAds {
     window.gtag("js", new Date());
     window.gtag("config", this.conversionId);
 
-    console.log("===in init Google Ads===");
+    console.log("===in init GA4 ===");
   }
 
   identify(rudderElement) {
-    return ;
+    // console.log("[GA4] identify:: method not supported");
+    const msg = rudderElement.message;
+    const props = msg.properties;
+    const identities = msg.identities;
+
+    if (identities['user_id']) {
+      window.gtag('config', this.conversionId, {user_id: identities.user_id});
+      console.log('[GA4] identify user id ' + identities.user_id);
+    }
+
+    console.log('[GA4] identify');
   }
 
   // https://developers.google.com/gtagjs/reference/event
   track(rudderElement) {
-    console.log("in GoogleAdsAnalyticsManager track");
+    console.log("in GA4 track");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;
     let sentTo = this.conversionId;
-    let payload = {user_id: identities.uid, send_to: sentTo};
+    let payload = {user_id: identities.user_id ? identities.user_id : identities.uid, send_to: sentTo};
     let event = msg.event;
+    let cv = this.getConversion(event);
+    let cvEvent = (cv) ? cv.alias : '';
 
     // check event could be sent
     if (!this.canSendEvent(event))
       return;
 
     // prepare payload
-    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
-      if (/InitiateCheckout|AddPaymentInfo|Purchase/.test(event) != false) {
-        for(var name in props) {
-          if (name == 'contents')
-            payload['items'] = props[name];
-          else
-            payload[name] = props[name];
+    if (/^Purchase|AddPaymentInfo|InitiateCheckout$/.test(event) || /^purchase|begin_checkout|add_payment_info$/.test(cvEvent)) {
+      for(var name in props) {
+        // set trasaction id
+        if (name == 'order_id')
+          payload['transaction_id'] = props[name];
+        else if (name == 'amount')
+          payload['value'] = props[name];
+        else if (name == 'contents') {
+          let items = [];
+          for(var i=0; i<props[name].length; i++) {
+            items.push({
+              item_id: props[name][i]['id'],
+              item_name: props[name][i]['name'],
+              item_category: props[name][i]['category'],
+              price: props[name][i]['value'],
+              quantity: props[name][i]['quantity']
+            });
+          }
+          payload['items'] = items;
+        } else {
+          payload[name] = props[name];
         }
-      } else { // ViewContent or AddToCart
-        var items = [];
-        payload = {
-          value: props.value,
-          items: [
-            props
-          ],
-          user_id: identities.uid,
-          send_to: sentTo
-        };
       }
+    } else if (/^AddToCart|ViewContent$/.test(event) || /^add_to_cart|view_item$/.test(cvEvent)) {
+      // set value
+      payload['value'] = props['value'] ? props['value'] : 0;
+      payload['items'] = [
+        {
+          item_id: props['id'],
+          item_name: props['name'],
+          item_category: props['category'],
+          price: props['value'],
+          quantity: props['quantity']
+        }
+      ];
     } else {
       if (event == 'Search')
         payload['search_string'] = props.keyword;
@@ -77,15 +104,8 @@ class GoogleAds {
           payload[name] = props[name];
     }
 
-    const cv = this.getConversion(event);
-
     if (cv) {
-      if (cv.label) {
-        payload.send_to += '/' + cv.label;
-        window.gtag("event", 'conversion', payload);
-      }
-
-      var ev = (cv.alias) ? cv.alias : event,
+      var ev = (cvEvent) ? cvEvent : event,
           json = JSON.parse(JSON.stringify(payload));
 
       json['send_to'] = sentTo;
@@ -96,25 +116,20 @@ class GoogleAds {
   }
 
   page(rudderElement) {
-    console.log("in GoogleAdsAnalyticsManager page");
+    console.log("in GA4 page");
     const msg = rudderElement.message;
     const identities = msg.identities;
     const sentTo = this.conversionId;
     let ev = 'PageView';
     let props = {
       send_to: sentTo,
-      user_id: identities.uid
+      user_id: identities.user_id ? identities.user_id : identities.uid
     };
 
     if (!this.canSendEvent(ev))
       return;
 
     const cv = this.getConversion(ev);
-    if (cv.label) {
-      props.send_to += '/' + cv.label;
-      ev = 'conversion';
-    }
-
     window.gtag("event", ev, props);
   }
 
@@ -148,4 +163,4 @@ class GoogleAds {
   }
 }
 
-export { GoogleAds };
+export { GA4Pixel };

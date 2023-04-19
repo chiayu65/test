@@ -8,6 +8,7 @@ import * as AmobeePixel from "./AmobeePixel";
 import * as DV360Pixel from "./DV360Pixel";
 import * as BingPixel from "./BingPixel";
 import * as YahooPixel from "./YahooPixel";
+import * as GA4Pixel from "./GA4Pixel";
 
 // the key names should match the destination.name value to keep partity everywhere
 // (config-plan name, native destination.name , exported integration name(this one below))
@@ -23,6 +24,7 @@ const integrations = {
   DV360: DV360Pixel.default,
   BING_PIXEL: BingPixel.default,
   YAHOO_PIXEL: YahooPixel.default,
+  GA4_PIXEL: GA4Pixel.default
 };
 
 export { integrations };

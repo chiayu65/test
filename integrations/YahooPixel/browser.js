@@ -29,8 +29,7 @@ class YahooPixel  {
   }
 
   identify(rudderElement) {
-    console.log('YahooPixel  cann\'t support identify method');
-    return;
+    return ;
   }
 
   track(rudderElement) {

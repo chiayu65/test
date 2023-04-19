@@ -479,6 +479,14 @@ class Analytics {
           this.storage.setData(name, value.trim());
       }
     }
+
+    const rudderElement = new CyntelliElementBuilder().setType("identify")
+                                                      .setPageProperty(this.getPageProperties())
+                                                      .build();
+    this.processAndSendDataToDestinations(
+      "identify",
+      rudderElement
+    );
   }
 
   alias() {
@@ -901,7 +909,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.5.0';
+window.cyntellianalytics.version = '1.6.0';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;

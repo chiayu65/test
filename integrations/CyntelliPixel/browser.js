@@ -49,8 +49,7 @@ class CyntelliPixel {
   }
 
   identify(rudderElement) {
-    console.log('CyntelliPixel cann\'t support identify method');
-    return;
+    return ;
   }
 
   track(rudderElement) {

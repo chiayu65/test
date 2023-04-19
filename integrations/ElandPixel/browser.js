@@ -47,7 +47,7 @@ class ElandPixel {
   }
 
   identify(rudderElement) {
-    return;
+    return ;
   }
 
   track(rudderElement) {

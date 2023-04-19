@@ -22,7 +22,7 @@ class CompassPixel {
   }
 
   identify(rudderElement) {
-    console.log("[CompassPixel] identify:: method not supported");
+    return ;
   }
 
   track(rudderElement) {
