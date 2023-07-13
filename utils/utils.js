@@ -76,7 +76,7 @@ function getJSON(url, wrappers, isLoaded, callback) {
   xhr.onload = function () {
     const { status } = xhr;
     if (status == 200) {
-      logger.debug("status 200");
+      // logger.debug("status 200");
       callback(null, xhr.responseText, wrappers, isLoaded);
     } else {
       callback(status);
@@ -104,7 +104,7 @@ function getJSONTrimmed(context, url, writeKey, callback) {
   xhr.onload = function () {
     const { status } = xhr;
     if (status == 200) {
-      logger.debug("status 200 " + "calling callback");
+      // logger.debug("status 200 " + "calling callback");
       cb_(200, xhr.responseText);
     } else {
       handleError(
@@ -130,12 +130,12 @@ function getJSONConfig(context, url, clientId, callback) {
   const xhr = new XMLHttpRequest();
 
   const uri = url + '/' + clientId;
-console.log(uri);
+// console.log(uri);
   xhr.open("GET", uri, true);
   xhr.onload = function () {
     const { status } = xhr;
     if (status == 200) {
-      logger.debug("status 200 " + "calling callback");
+      // logger.debug("status 200 " + "calling callback");
       cb_(200, xhr.responseText);
     } else {
       handleError(
@@ -166,10 +166,10 @@ function handleError(error, analyticsInstance) {
       }
     }
     if (errorMessage && !sampleAdBlockTest) {
-      logger.error("[Util] handleError:: ", errorMessage);
+      // logger.error("[Util] handleError:: ", errorMessage);
     }
   } catch (e) {
-    logger.error("[Util] handleError:: ", e);
+    // logger.error("[Util] handleError:: ", e);
   }
 }
 
@@ -464,27 +464,27 @@ function checkReservedKeywords(message, messageType) {
   if (properties) {
     Object.keys(properties).forEach((property) => {
       if (ReservedPropertyKeywords.indexOf(property.toLowerCase()) >= 0) {
-        logger.error(
-          `Warning! : Reserved keyword used in properties--> ${property} with ${messageType} call`
-        );
+        // logger.error(
+        //   `Warning! : Reserved keyword used in properties--> ${property} with ${messageType} call`
+        // );
       }
     });
   }
   if (traits) {
     Object.keys(traits).forEach((trait) => {
       if (ReservedPropertyKeywords.indexOf(trait.toLowerCase()) >= 0) {
-        logger.error(
-          `Warning! : Reserved keyword used in traits--> ${trait} with ${messageType} call`
-        );
+        // logger.error(
+        //   `Warning! : Reserved keyword used in traits--> ${trait} with ${messageType} call`
+        // );
       }
     });
   }
   if (contextualTraits) {
     Object.keys(contextualTraits).forEach((contextTrait) => {
       if (ReservedPropertyKeywords.indexOf(contextTrait.toLowerCase()) >= 0) {
-        logger.error(
-          `Warning! : Reserved keyword used in traits --> ${contextTrait} with ${messageType} call`
-        );
+        // logger.error(
+        //   `Warning! : Reserved keyword used in traits --> ${contextTrait} with ${messageType} call`
+        // );
       }
     });
   }

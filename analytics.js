@@ -655,8 +655,8 @@ class Analytics {
       rudderElement.setProperty({});
     }
 
-    console.log('props @ processTrack', properties);
-    console.log('element @ processTrack', rudderElement);
+    // console.log('props @ processTrack', properties);
+    // console.log('element @ processTrack', rudderElement);
 
     this.trackEvent(rudderElement, options, callback);
   }
@@ -909,7 +909,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.7.4';
+window.cyntellianalytics.version = '1.7.5';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;
