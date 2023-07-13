@@ -838,17 +838,27 @@
 
 // this.accountId = config.accountId;//AW-696901813
 
+// console.log(`in script loader=== ${id}`);
+
+// console.log("==script==", e);
+
 // https://developers.google.com/gtagjs/reference/event
+
+// console.log("in GoogleAdsAnalyticsManager track");
 
 // check event could be sent
 
 // prepare payload
+
+// console.log("in GoogleAdsAnalyticsManager page");
 
 /* 16 */
 
 /* 17 */
 
 /* 18 */
+
+// console.log("in DV360Manager page");
 
 /* 19 */
 
@@ -1315,6 +1325,8 @@
    * @param {*} value
    */
 
+// logger.error(e);
+
 /**
    *
    * @param {*} key
@@ -1362,6 +1374,8 @@
    * @param {*} value
    */
 
+// console.log('set anon id: ' + value);
+
 /**
    * get the stored userId
    */
@@ -1400,15 +1414,27 @@
    * @param string value
    */
 
+// logger.debug(`in script loader=== ${id}`);
+
+// logger.debug("==parent script==", e);
+
+// logger.debug("==adding script==", js);
+
 // CONCATENATED MODULE: ./integrations/ScriptLoader.js
 
 // CONCATENATED MODULE: ./integrations/FacebookPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/FacebookPixel/browser.js
 
+// console.log("===in init FacebookPixel===");
+
 // disables automatic pageview tracking
 
 // enables fb
+
+// console.log("in FBPixel isLoaded");
+
+// console.log("in FBPixel isReady");
 
 // is using alias to send event
 
@@ -1416,11 +1442,21 @@
 
 // CONCATENATED MODULE: ./integrations/CyntelliPixel/index.js
 
+// console.log("===in init CyntelliPixel===");
+
+// console.log("in Cyntelli Pixel isLoaded");
+
+// console.log("in Cyntelli Pixel isReady");
+
+// console.log('Cyntelli send page event');
+
 // EXTERNAL MODULE: ./integrations/GoogleAds/index.js
 
 // CONCATENATED MODULE: ./integrations/ElandPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/ElandPixel/browser.js
+
+// console.log("===in init ELAND_PIXEL ===");
 
 //"adgeek",
 
@@ -1432,17 +1468,31 @@
 
 //AW-696901813
 
+// console.log(`in script loader=== LINE tag`);
+
+// console.log("in LinePixel track");
+
+// console.log("in LinePixel page");
+
 // CONCATENATED MODULE: ./integrations/CompassPixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/CompassPixel/index.js
 
-// console.log("send conversion of compass: " + src);
+// console.log("===in init CompassPixel ===");
+
+// console.log("in CompassPixel page");
 
 // this.track(rudderElement);
 
 // CONCATENATED MODULE: ./integrations/AmobeePixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/AmobeePixel/index.js
+
+// console.log("===in init AmobeePixel===");
+
+// console.log("in Amobee Pixel isLoaded");
+
+// console.log("in Amobee Pixel isReady");
 
 // EXTERNAL MODULE: ./integrations/DV360Pixel/index.js
 
@@ -1454,13 +1504,27 @@
 
 // CONCATENATED MODULE: ./integrations/BingPixel/browser.js
 
+// console.log("===in init BingPixel===");
+
+// console.log("in BingPixel (" + this.queueName + ") isLoaded");
+
+// console.log("in BingPixel(" + this.queueName + ") isReady");
+
 // 增加轉換價值
+
+// console.log(payload, ev);
 
 // CONCATENATED MODULE: ./integrations/BingPixel/index.js
 
 // CONCATENATED MODULE: ./integrations/YahooPixel/browser.js
 
 // this.advId = config.advId;
+
+// console.log("===in init YahooPixel (" + this.queueName + ") ===");
+
+// console.log("in YahooPixel (" + this.pixelId + ") isLoaded");
+
+// console.log("in YahooPixel (" + this.queueName + ") isReady");
 
 // let payload = {el: 'evId:' + msg.messageId, advertiser_id: this.advId};
 
@@ -1472,9 +1536,15 @@
 
 // console.log("[GA4] identify:: method not supported");
 
+// console.log('[GA4] identify');
+
+// console.log("in GA4 track");
+
 // set trasaction id
 
 // set value
+
+// console.log("in GA4 page");
 
 // CONCATENATED MODULE: ./integrations/GA4Pixel/index.js
 
@@ -1534,12 +1604,14 @@
  * consts
  */
 
+// logger.debug("=====from analytics array, calling method:: " + method);
+
+// new instance
+
 /**
  * class responsible for handling core
  * event tracking functionalities
  */
-
-// new instance
 
 /**
    * Creates an instance of Analytics.
@@ -1562,6 +1634,8 @@
    * @param {*} clientId
    * @memberof Analytics
    */
+
+// logger.debug("inside load");
 
 // validate writeKye
 
@@ -1600,9 +1674,25 @@
    * @memberof Analytics
    */
 
+// logger.debug(`===in process response=== ${status}`);
+
+// logger.debug(
+
+//   `Destination ${index} Enabled? ${destination.enabled} Type: ${destination.destinationDefinition.name} Use Native SDK? true`
+
+// );
+
+// logger.debug("this.clientIntegrations: ", this.clientIntegrations);
+
 // intersection of config-plane native sdk destinations with sdk load time destination list
 
 // remove from the list which don't have support yet in SDK
+
+// logger.debug("===handling config BE response processing error===");
+
+//   "autoTrackHandlersRegistered",
+
+//   this.autoTrackHandlersRegistered
 
 /**
    * Initialize integrations by addinfg respective scripts
@@ -1613,9 +1703,43 @@
    * @memberof Analytics
    */
 
+// logger.debug("supported intgs ", integrations);
+
 // this.clientIntegrationObjects = [];
 
+//   "[Analytics] init :: trying to initialize integration name:: ",
+
+//   intg.name
+
+// logger.debug("initializing destination: ", intg);
+
+// logger.error(
+
+//   "[Analytics] initialize integration (integration.init()) failed :: ",
+
+//   "===replay events called====",
+
+//   " successfully loaded count: ",
+
+//   object.successfullyLoadedIntegration.length,
+
+//   " failed loaded count: ",
+
+//   object.failedToBeLoadedIntegration.length
+
 // eslint-disable-next-line no-param-reassign
+
+//   "==registering after callback===",
+
+//   " after to be called after count : ",
+
+//   object.clientIntegrationObjects.length
+
+// logger.debug("==registering ready callback===");
+
+// logger.debug("===looping over each successful integration====");
+
+// logger.debug("===letting know I am ready=====", intg.name);
 
 // send the queued events to the fetched integration
 
@@ -1631,11 +1755,31 @@
    * prepare promise for particular instance
    */
 
+// logger.debug('isInit', instance.isLoaded());
+
+// logger.debug("===integration loaded successfully====", instance.name);
+
+// logger.debug("====max wait over====");
+
 // if (this.sendAdblockPage && category != "RudderJS-Initiated") {
 
 //   this.sendSampleRequest();
 
 // }
+
+// logger.debug("inside alias");
+
+// logger.debug("inside reset");
+
+//   "registerCallbacks",
+
+//   methodName,
+
+//   this.clientSuppliedCallbacks[methodName]
+
+// logger.debug("inside registerCallbacks");
+
+// logger.debug(search);
 
 // if (!this.loaded) return;
 
@@ -1719,6 +1863,8 @@
 
 // assign page properties to context
 
+// logger.debug("anonymousId: " + this.anonymousId);
+
 // rudderElement.message.properties = this.removeEmptyName(rudderElement.message.properties);
 
 // structure user supplied integrations object to rudder format
@@ -1731,9 +1877,13 @@
 
 // in the page, add the events to a queue and process later
 
+// logger.debug("pushing in replay queue");
+
 // new event processing after analytics initialized  but integrations not fetched from BE
 
 // convert integrations object to server identified names, kind of hack now!
+
+// logger.debug(`${type} is called `);
 
 /**
    * remove name by empty value
@@ -1760,6 +1910,8 @@
 // check initial start from load
 
 // run load and shift this task
+
+// logger.debug("=====from init, calling method:: " + method);
 
 // once loaded, parse querystring of the page url to send events
 

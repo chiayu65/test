@@ -55,7 +55,7 @@ function processDataInAnalyticsArray(analytics) {
       const event = [...analytics.toBeProcessedArray[i]];
       const method = event[0];
       event.shift();
-      logger.debug("=====from analytics array, calling method:: " + method);
+      // logger.debug("=====from analytics array, calling method:: " + method);
       analytics[method](...event);
     }
 
@@ -151,7 +151,7 @@ class Analytics {
    * @memberof Analytics
    */
   load(clientId, options) {
-    logger.debug("inside load");
+    // logger.debug("inside load");
     if (this.loaded) return;
 
     // validate writeKye
@@ -201,7 +201,7 @@ class Analytics {
    */
   processResponse(status, response) {
     try {
-      logger.debug(`===in process response=== ${status}`);
+      // logger.debug(`===in process response=== ${status}`);
       response = JSON.parse(response);
       if (
         response.source.useAutoTracking &&
@@ -212,9 +212,9 @@ class Analytics {
         this.autoTrackHandlersRegistered = true;
       }
       response.source.destinations.forEach(function (destination, index) {
-        logger.debug(
-          `Destination ${index} Enabled? ${destination.enabled} Type: ${destination.destinationDefinition.name} Use Native SDK? true`
-        );
+        // logger.debug(
+        //   `Destination ${index} Enabled? ${destination.enabled} Type: ${destination.destinationDefinition.name} Use Native SDK? true`
+        // );
         if (destination.enabled) {
           this.clientIntegrations.push({
             name: destination.destinationDefinition.name,
@@ -223,7 +223,7 @@ class Analytics {
         }
       }, this);
 
-      logger.debug("this.clientIntegrations: ", this.clientIntegrations);
+      // logger.debug("this.clientIntegrations: ", this.clientIntegrations);
       // intersection of config-plane native sdk destinations with sdk load time destination list
       this.clientIntegrations = findAllEnabledDestinations(
         this.loadOnlyIntegrations,
@@ -238,11 +238,11 @@ class Analytics {
       this.init(this.clientIntegrations);
     } catch (error) {
       handleError(error);
-      logger.debug("===handling config BE response processing error===");
-      logger.debug(
-        "autoTrackHandlersRegistered",
-        this.autoTrackHandlersRegistered
-      );
+      // logger.debug("===handling config BE response processing error===");
+      // logger.debug(
+      //   "autoTrackHandlersRegistered",
+      //   this.autoTrackHandlersRegistered
+      // );
       if (this.autoTrackFeatureEnabled && !this.autoTrackHandlersRegistered) {
         addDomEventHandlers(this);
         this.autoTrackHandlersRegistered = true;
@@ -260,7 +260,7 @@ class Analytics {
    */
   init(intgArray) {
     const self = this;
-    logger.debug("supported intgs ", integrations);
+    // logger.debug("supported intgs ", integrations);
     // this.clientIntegrationObjects = [];
 
     if (!intgArray || intgArray.length == 0) {
@@ -273,23 +273,23 @@ class Analytics {
     let intgInstance;
     intgArray.forEach(intg => {
       try {
-        logger.debug(
-          "[Analytics] init :: trying to initialize integration name:: ",
-          intg.name
-        );
+        // logger.debug(
+        //   "[Analytics] init :: trying to initialize integration name:: ",
+        //   intg.name
+        // );
         const intgClass = integrations[intg.name];
         const destConfig = intg.config;
         intgInstance = new intgClass(destConfig, self);
         intgInstance.init();
 
-        logger.debug("initializing destination: ", intg);
+        // logger.debug("initializing destination: ", intg);
 
         this.isInitialized(intgInstance).then(this.replayEvents);
       } catch (e) {
-        logger.error(
-          "[Analytics] initialize integration (integration.init()) failed :: ",
-          intg.name
-        );
+        // logger.error(
+        //   "[Analytics] initialize integration (integration.init()) failed :: ",
+        //   intg.name
+        // );
         this.failedToBeLoadedIntegration.push(intgInstance);
       }
     });
@@ -302,35 +302,35 @@ class Analytics {
         object.clientIntegrations.length) &&
       !object.areEventsReplayed
     ) {
-      logger.debug(
-        "===replay events called====",
-        " successfully loaded count: ",
-        object.successfullyLoadedIntegration.length,
-        " failed loaded count: ",
-        object.failedToBeLoadedIntegration.length
-      );
+      // logger.debug(
+      //   "===replay events called====",
+      //   " successfully loaded count: ",
+      //   object.successfullyLoadedIntegration.length,
+      //   " failed loaded count: ",
+      //   object.failedToBeLoadedIntegration.length
+      // );
       // eslint-disable-next-line no-param-reassign
       object.clientIntegrationObjects = [];
       // eslint-disable-next-line no-param-reassign
       object.clientIntegrationObjects = object.successfullyLoadedIntegration;
 
-      logger.debug(
-        "==registering after callback===",
-        " after to be called after count : ",
-        object.clientIntegrationObjects.length
-      );
+      // logger.debug(
+      //   "==registering after callback===",
+      //   " after to be called after count : ",
+      //   object.clientIntegrationObjects.length
+      // );
       object.executeReadyCallback = after(
         object.clientIntegrationObjects.length,
         object.readyCallback
       );
 
-      logger.debug("==registering ready callback===");
+      // logger.debug("==registering ready callback===");
       object.on("ready", object.executeReadyCallback);
 
       object.clientIntegrationObjects.forEach(intg => {
-        logger.debug("===looping over each successful integration====");
+        // logger.debug("===looping over each successful integration====");
         if (!intg.isReady || intg.isReady()) {
-          logger.debug("===letting know I am ready=====", intg.name);
+          // logger.debug("===letting know I am ready=====", intg.name);
           object.emit("ready");
         }
       });
@@ -402,20 +402,20 @@ class Analytics {
    */
   isInitialized(instance, time = 0) {
     return new Promise(resolve => {
-      logger.debug('isInit', instance.isLoaded());
+      // logger.debug('isInit', instance.isLoaded());
       if (instance.isLoaded()) {
-        logger.debug("===integration loaded successfully====", instance.name);
+        // logger.debug("===integration loaded successfully====", instance.name);
         this.successfullyLoadedIntegration.push(instance);
         return resolve(this);
       }
       if (time >= MAX_WAIT_FOR_INTEGRATION_LOAD) {
-        logger.debug("====max wait over====");
+        // logger.debug("====max wait over====");
         this.failedToBeLoadedIntegration.push(instance);
         return resolve(this);
       }
 
       this.pause(INTEGRATION_LOAD_CHECK_INTERVAL).then(() => {
-        logger.debug("====after pause, again checking====");
+        // logger.debug("====after pause, again checking====");
         return this.isInitialized(
           instance,
           time + INTEGRATION_LOAD_CHECK_INTERVAL
@@ -490,7 +490,7 @@ class Analytics {
   }
 
   alias() {
-    logger.debug("inside alias");
+    // logger.debug("inside alias");
   }
 
   ready(callback) {
@@ -499,11 +499,11 @@ class Analytics {
       this.readyCallback = callback;
       return;
     }
-    logger.error("ready callback is not a function");
+    // logger.error("ready callback is not a function");
   }
 
   reset() {
-    logger.debug("inside reset");
+    // logger.debug("inside reset");
   }
 
   initializeCallbacks() {
@@ -547,19 +547,19 @@ class Analytics {
 
     Object.keys(this.clientSuppliedCallbacks).forEach(methodName => {
       if (this.clientSuppliedCallbacks.hasOwnProperty(methodName)) {
-        logger.debug(
-          "registerCallbacks",
-          methodName,
-          this.clientSuppliedCallbacks[methodName]
-        );
+        // logger.debug(
+        //   "registerCallbacks",
+        //   methodName,
+        //   this.clientSuppliedCallbacks[methodName]
+        // );
         this.on(methodName, this.clientSuppliedCallbacks[methodName]);
       }
     });
   }
 
   parseQueryString(search) {
-    logger.debug("inside registerCallbacks");
-    logger.debug(search);
+    // logger.debug("inside registerCallbacks");
+    // logger.debug(search);
     return {};
   }
 
@@ -731,9 +731,9 @@ class Analytics {
           ...options[key]
         });
       } else {
-        logger.error(
-          "[Analytics: processOptionsParam] context passed in options is not object"
-        );
+        // logger.error(
+        //   "[Analytics: processOptionsParam] context passed in options is not object"
+        // );
       }
     }
   }
@@ -786,7 +786,7 @@ class Analytics {
         ...this.userTraits
       };
 
-      logger.debug("anonymousId: " + this.anonymousId);
+      // logger.debug("anonymousId: " + this.anonymousId);
       rudderElement.message.anonymousId = this.anonymousId;
       rudderElement.message.userId = rudderElement.message.userId
         ? rudderElement.message.userId
@@ -830,7 +830,7 @@ class Analytics {
       // config plane native enabled destinations, still not completely loaded
       // in the page, add the events to a queue and process later
       if (!this.clientIntegrationObjects) {
-        logger.debug("pushing in replay queue");
+        // logger.debug("pushing in replay queue");
         // new event processing after analytics initialized  but integrations not fetched from BE
         this.toBeProcessedByIntegrationArray.push([type, rudderElement]);
       }
@@ -838,7 +838,7 @@ class Analytics {
       // convert integrations object to server identified names, kind of hack now!
       transformToServerNames(rudderElement.message.integrations);
 
-      logger.debug(`${type} is called `);
+      // logger.debug(`${type} is called `);
       if (callback) {
         callback();
       }
@@ -909,7 +909,7 @@ const eventsPushedAlready =
   window.cyntellianalytics.push == Array.prototype.push;
 
 // set version
-window.cyntellianalytics.version = '1.7.3';
+window.cyntellianalytics.version = '1.7.4';
 
 // exchange to internal variable
 const argumentsArray = window.cyntellianalytics;
@@ -927,7 +927,7 @@ if (
 ) {
   const method = argumentsArray[0][0];
   argumentsArray[0].shift();
-  logger.debug("=====from init, calling method:: " + method);
+  // logger.debug("=====from init, calling method:: " + method);
   instance[method](...argumentsArray[0]);
   argumentsArray.shift();
 }

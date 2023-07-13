@@ -54,7 +54,7 @@ class Storage {
     try {
       return value ? JSON.parse(value) : null;
     } catch (e) {
-      logger.error(e);
+      // logger.error(e);
       return value || null;
     }
   }
@@ -73,7 +73,7 @@ class Storage {
    */
   setUserId(value) {
     if (typeof value !== "string") {
-      logger.error("[Storage] setUserId:: userId should be string");
+      // logger.error("[Storage] setUserId:: userId should be string");
       return;
     }
     this.storage.set(
@@ -99,7 +99,7 @@ class Storage {
    */
   setGroupId(value) {
     if (typeof value !== "string") {
-      logger.error("[Storage] setGroupId:: groupId should be string");
+      // logger.error("[Storage] setGroupId:: groupId should be string");
       return;
     }
     this.storage.set(
@@ -124,9 +124,9 @@ class Storage {
    * @param {*} value
    */
   setAnonymousId(value) {
-    console.log('set anon id: ' + value);
+    // console.log('set anon id: ' + value);
     if (typeof value !== "string") {
-      logger.error("[Storage] setAnonymousId:: anonymousId should be string");
+      // logger.error("[Storage] setAnonymousId:: anonymousId should be string");
       return;
     }
 

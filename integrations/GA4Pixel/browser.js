@@ -31,7 +31,7 @@ class GA4Pixel {
   }
 
   identify(rudderElement) {
-    console.log("[GA4] identify:: method not supported");
+    // console.log("[GA4] identify:: method not supported");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;

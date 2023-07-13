@@ -51,7 +51,7 @@ class CookieLocal {
       cookie(key, value, clone(this._options));
       return true;
     } catch (e) {
-      logger.error(e);
+      // logger.error(e);
       return false;
     }
   }
