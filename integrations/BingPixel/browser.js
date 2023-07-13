@@ -8,17 +8,17 @@ class BingPixel {
   }
 
   init() {
-    console.log("===in init BingPixel===");
+    // console.log("===in init BingPixel===");
     (function(w,d,t,r,u,p){var f,n,i;w[u]=w[u]||[] ,f=function(){var o={ti:p}; o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")} ,n=d.createElement(t),n.src=r,n.async=1,n.onload=n .onreadystatechange=function() {var s=this.readyState;s &&s!=="loaded"&& s!=="complete"||(f(),n.onload=n. onreadystatechange=null)},i= d.getElementsByTagName(t)[0],i. parentNode.insertBefore(n,i)})(window,document,"script"," //bat.bing.com/bat.js",this.queueName, this.pixelId);
   }
 
   isLoaded() {
-    console.log("in BingPixel (" + this.queueName + ") isLoaded");
+    // console.log("in BingPixel (" + this.queueName + ") isLoaded");
     return window[this.queueName] && window[this.queueName].push !== Array.prototype.push;
   }
 
   isReady() {
-    console.log("in BingPixel(" + this.queueName + ") isReady");
+    // console.log("in BingPixel(" + this.queueName + ") isReady");
     return this.isLoaded();
   }
 
@@ -55,10 +55,10 @@ class BingPixel {
         payload['revenue_value'] = payload['value'];
     }
 
-    console.log(payload, ev);
+    // console.log(payload, ev);
 
     this.send(ev, payload, {});
-    console.log("in BingPixel (" + this.queueName + ") track");
+    // console.log("in BingPixel (" + this.queueName + ") track");
   }
 
   send(event, payload, options) {

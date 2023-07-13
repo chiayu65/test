@@ -10,22 +10,22 @@ class CyntelliPixel {
   }
 
   init() {
-    console.log("===in init CyntelliPixel===");
+    // console.log("===in init CyntelliPixel===");
     this.isIint = true;
   }
 
   isLoaded() {
-    console.log("in Cyntelli Pixel isLoaded");
+    // console.log("in Cyntelli Pixel isLoaded");
     return this.isIint;
   }
 
   isReady() {
-    console.log("in Cyntelli Pixel isReady");
+    // console.log("in Cyntelli Pixel isReady");
     return this.isLoaded();
   }
 
   page(rudderElement) {
-    console.log('Cyntelli send page event');
+    // console.log('Cyntelli send page event');
     const msg = rudderElement.message;
     const newProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
@@ -67,7 +67,7 @@ class CyntelliPixel {
     data = this.merge(data, newIds);
     data = this.merge(data, properties);
     this.sendRequest(data);
-    console.log("in CyntelliPixel (" + this.pvId + ':' + this.pId + ") track");
+    // console.log("in CyntelliPixel (" + this.pvId + ':' + this.pId + ") track");
   }
 
   merge(obj1, obj2) {

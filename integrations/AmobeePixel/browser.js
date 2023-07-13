@@ -11,17 +11,17 @@ class AmobeePixel {
   }
 
   init() {
-    console.log("===in init AmobeePixel===");
+    // console.log("===in init AmobeePixel===");
     this.isIint = true;
   }
 
   isLoaded() {
-    console.log("in Amobee Pixel isLoaded");
+    // console.log("in Amobee Pixel isLoaded");
     return this.isIint;
   }
 
   isReady() {
-    console.log("in Amobee Pixel isReady");
+    // console.log("in Amobee Pixel isReady");
     return this.isLoaded();
   }
 
@@ -59,7 +59,7 @@ class AmobeePixel {
     img.style = 'display:none';
     img.src = 'https://r.turn.com/r/beacon?b2=' + cv.label;
     window.document.body.appendChild(img);
-    console.log("in AmobeePixel (" + cv.label + ") track");
+    // console.log("in AmobeePixel (" + cv.label + ") track");
   }
 
   getConversion(event) {

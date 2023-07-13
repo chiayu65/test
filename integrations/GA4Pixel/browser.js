@@ -9,14 +9,14 @@ class GA4Pixel {
   init() {
     const sourceUrl = `https://www.googletagmanager.com/gtag/js?id=${this.conversionId}`;
     (function (id, src, document) {
-      console.log(`in script loader=== ${id}`);
+      // console.log(`in script loader=== ${id}`);
       const js = document.createElement("script");
       js.src = src;
       js.async = 1;
       js.type = "text/javascript";
       js.id = id;
       const e = document.getElementsByTagName("head")[0];
-      console.log("==script==", e);
+      // console.log("==script==", e);
       e.appendChild(js);
     })("google-analytics4-integration", sourceUrl, document);
 
@@ -27,26 +27,26 @@ class GA4Pixel {
     window.gtag("js", new Date());
     window.gtag("config", this.conversionId);
 
-    console.log("===in init GA4 ===");
+    // console.log("===in init GA4 ===");
   }
 
   identify(rudderElement) {
-    // console.log("[GA4] identify:: method not supported");
+    console.log("[GA4] identify:: method not supported");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;
 
     if (identities['user_id']) {
       window.gtag('config', this.conversionId, {user_id: identities.user_id});
-      console.log('[GA4] identify user id ' + identities.user_id);
+      // console.log('[GA4] identify user id ' + identities.user_id);
     }
 
-    console.log('[GA4] identify');
+    // console.log('[GA4] identify');
   }
 
   // https://developers.google.com/gtagjs/reference/event
   track(rudderElement) {
-    console.log("in GA4 track");
+    // console.log("in GA4 track");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;
@@ -87,6 +87,7 @@ class GA4Pixel {
     } else if (/^AddToCart|ViewContent$/.test(event) || /^add_to_cart|view_item$/.test(cvEvent)) {
       // set value
       payload['value'] = props['value'] ? props['value'] : 0;
+      payload['currency'] = props['currency'] ? props['currency'] : 'TWD';
       payload['items'] = [
         {
           item_id: props['id'],
@@ -111,12 +112,13 @@ class GA4Pixel {
       json['send_to'] = sentTo;
       window.gtag('event', ev, json);
     } else {
+      var json = JSON.parse(JSON.stringify(payload));
       window.gtag('event', event, json);
     }
   }
 
   page(rudderElement) {
-    console.log("in GA4 page");
+    // console.log("in GA4 page");
     const msg = rudderElement.message;
     const identities = msg.identities;
     const sentTo = this.conversionId;

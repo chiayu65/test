@@ -9,7 +9,7 @@ class ElandPixel {
   }
 
   init() {
-    console.log("===in init ELAND_PIXEL ===");
+    // console.log("===in init ELAND_PIXEL ===");
     ScriptLoader(
       "elandpixel-integration",
       "//dmp.eland-tech.com/dmpreceiver/eland_tracker.js"

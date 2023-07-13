@@ -8,13 +8,13 @@ class LinePixel {
 
   init() {
     (function(g,d,o){
-      console.log(`in script loader=== LINE tag`);
+      // console.log(`in script loader=== LINE tag`);
       g._ltq=g._ltq||[];g._lt=g._lt||function(){g._ltq.push(arguments)};
       var h=location.protocol==='https:'?'https://d.line-scdn.net':'http://d.line-cdn.net';
       var s=d.createElement('script');s.async=1;
       s.src=o||h+'/n/line_tag/public/release/v1/lt.js';
       var t=d.getElementsByTagName('script')[0];t.parentNode.insertBefore(s,t);
-      console.log(t);
+      // console.log(t);
     })(window, document);
 
     window._lt('init', {
@@ -22,7 +22,7 @@ class LinePixel {
       tagId: this.tagId
     });
 
-    console.log("===in init LinePixel ===");
+    // console.log("===in init LinePixel ===");
   }
 
   identify(rudderElement) {
@@ -30,7 +30,7 @@ class LinePixel {
   }
 
   track(rudderElement) {
-    console.log("in LinePixel track");
+    // console.log("in LinePixel track");
     const msg = rudderElement.message;
     const ev = msg.event;
     if (!this.canSendEvent(ev))
@@ -44,7 +44,7 @@ class LinePixel {
   }
 
   page(rudderElement) {
-    console.log("in LinePixel page");
+    // console.log("in LinePixel page");
     const msg = rudderElement.message;
     const ev = msg.event;
     if (!this.canSendEvent('PageView'))

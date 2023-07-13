@@ -10,14 +10,14 @@ class GoogleAds {
   init() {
     const sourceUrl = `https://www.googletagmanager.com/gtag/js?id=${this.conversionId}`;
     (function (id, src, document) {
-      console.log(`in script loader=== ${id}`);
+      // console.log(`in script loader=== ${id}`);
       const js = document.createElement("script");
       js.src = src;
       js.async = 1;
       js.type = "text/javascript";
       js.id = id;
       const e = document.getElementsByTagName("head")[0];
-      console.log("==script==", e);
+      // console.log("==script==", e);
       e.appendChild(js);
     })("googleAds-integration", sourceUrl, document);
 
@@ -26,18 +26,32 @@ class GoogleAds {
       window.dataLayer.push(arguments);
     };
     window.gtag("js", new Date());
-    window.gtag("config", this.conversionId);
+    window.gtag("config", this.conversionId, {"allow_enhanced_conversions": true});
 
-    console.log("===in init Google Ads===");
+    // console.log("===in init Google Ads===");
   }
 
   identify(rudderElement) {
+    const msg = rudderElement.message;
+    const props = msg.properties;
+    const identities = msg.identities;
+    var pii = {};
+
+    if (identities.email)
+      pii['email'] = identities.email;
+
+    if (identities.email_sha256)
+      pii['sha256_email_address'] = identities.email_sha256;
+
+    window.gtag('set', 'user_data', pii);
+
+    // console.log('GoogleAds PII: ', pii);
     return ;
   }
 
   // https://developers.google.com/gtagjs/reference/event
   track(rudderElement) {
-    console.log("in GoogleAdsAnalyticsManager track");
+    // console.log("in GoogleAdsAnalyticsManager track");
     const msg = rudderElement.message;
     const props = msg.properties;
     const identities = msg.identities;
@@ -91,15 +105,16 @@ class GoogleAds {
       json['send_to'] = sentTo;
       window.gtag('event', ev, json);
     } else {
-      window.gtag('event', event, json);
+      window.gtag('event', event, payload);
     }
   }
 
   page(rudderElement) {
-    console.log("in GoogleAdsAnalyticsManager page");
+    // console.log("in GoogleAdsAnalyticsManager page");
     const msg = rudderElement.message;
     const identities = msg.identities;
     const sentTo = this.conversionId;
+
     let ev = 'PageView';
     let props = {
       send_to: sentTo,

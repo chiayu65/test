@@ -9,7 +9,7 @@ class CompassPixel {
   }
 
   init() {
-    console.log("===in init CompassPixel ===");
+    // console.log("===in init CompassPixel ===");
     var _lgy_adv = this.advId;
     window._lgy_advs = window._lgy_advs || {};
     window._lgy_advs[_lgy_adv] = false;
@@ -44,11 +44,11 @@ class CompassPixel {
     const s0 = document.getElementsByTagName('script')[0];
     s0.parentNode.insertBefore(s, s0);
     // console.log("send conversion of compass: " + src);
-    console.log("in CompassPixel ( " + this.advId + ") track");
+    // console.log("in CompassPixel ( " + this.advId + ") track");
   }
 
   page(rudderElement) {
-    console.log("in CompassPixel page");
+    // console.log("in CompassPixel page");
 
     // this.track(rudderElement);
   }

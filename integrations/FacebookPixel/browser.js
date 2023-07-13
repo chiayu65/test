@@ -13,7 +13,7 @@ class FacebookPixel {
   }
 
   init() {
-    console.log("===in init FacebookPixel===");
+    // console.log("===in init FacebookPixel===");
     window._fbq = function () {
       if (window.fbq.callMethod) {
         window.fbq.callMethod.apply(window.fbq, arguments);
@@ -37,12 +37,12 @@ class FacebookPixel {
   }
 
   isLoaded() {
-    console.log("in FBPixel isLoaded");
+    // console.log("in FBPixel isLoaded");
     return !!(window.fbq && window.fbq.callMethod);
   }
 
   isReady() {
-    console.log("in FBPixel isReady");
+    // console.log("in FBPixel isReady");
     return !!(window.fbq && window.fbq.callMethod);
   }
 

@@ -11,14 +11,14 @@ class DV360 {
   init() {
     const sourceUrl = `https://www.googletagmanager.com/gtag/js?id=${this.conversionId}`;
     (function (id, src, document) {
-      console.log(`in script loader=== ${id}`);
+      // console.log(`in script loader=== ${id}`);
       const js = document.createElement("script");
       js.src = src;
       js.async = 1;
       js.type = "text/javascript";
       js.id = id;
       const e = document.getElementsByTagName("head")[0];
-      console.log("==script==", e);
+      // console.log("==script==", e);
       e.appendChild(js);
     })("dv360-integration", sourceUrl, document);
 
@@ -29,7 +29,7 @@ class DV360 {
     window.gtag("js", new Date());
     window.gtag("config", this.conversionId);
 
-    console.log("===in init DV360 ===");
+    // console.log("===in init DV360 ===");
   }
 
   identify(rudderElement) {
@@ -62,11 +62,11 @@ class DV360 {
     }
 
     window.gtag("event", event, payload);
-    console.log("in DV360Manager (" + this.conversionId + ") track");
+    // console.log("in DV360Manager (" + this.conversionId + ") track");
   }
 
   page(rudderElement) {
-    console.log("in DV360Manager page");
+    // console.log("in DV360Manager page");
     const msg = rudderElement.message;
     const identities = msg.identities;
     const sentTo = this.conversionId;
