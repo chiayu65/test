@@ -1,5 +1,3 @@
-import ScriptLoader from "../ScriptLoader";
-
 class AmobeePixel {
   constructor(config) {
     this.pvId = config.pvId;
