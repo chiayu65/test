@@ -1464,6 +1464,8 @@
 
 //"footer",
 
+// get conversion
+
 // CONCATENATED MODULE: ./integrations/LinePixel/browser.js
 
 // CONCATENATED MODULE: ./integrations/LinePixel/index.js
@@ -1544,6 +1546,20 @@
 
 // set trasaction id
 
+// items.push({
+
+//   item_id: props[name][i]['id'],
+
+//   item_name: props[name][i]['name'],
+
+//   item_category: props[name][i]['category'],
+
+//   price: props[name][i]['value'],
+
+//   quantity: props[name][i]['quantity']
+
+// });
+
 // set value
 
 // console.log("in GA4 page");
@@ -1563,6 +1579,10 @@
 //clickforce_rtid("9967001");
 
 //  cft("setSiteId", "CF-230800137287");
+
+// console.log('isLoaded', window.clickforce_rtid);
+
+// console.log('isReady', window.clickforce_rtid);
 
 // CONCATENATED MODULE: ./integrations/ClickForcePixel/index.js
 

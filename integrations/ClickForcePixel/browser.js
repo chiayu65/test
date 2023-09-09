@@ -48,7 +48,7 @@ class ClickForcePixel {
           label: cv.label || ""
           //label: ""
     });
-    console.log('send clickforce event', event);
+    // console.log('send clickforce event', event);
   }
 
   page(rudderElement) {
@@ -57,7 +57,7 @@ class ClickForcePixel {
       return function(){
         window.cft("setSiteId", cftsdk_pixelId); //  cft("setSiteId", "CF-230800137287");
         window.cft("setViewPercentage");
-        console.log('set clickforce site id', cftsdk_pixelId);
+        // console.log('set clickforce site id', cftsdk_pixelId);
       }
     })(this.pixelId);
     window.clickForceDelayLoading();
@@ -78,12 +78,12 @@ class ClickForcePixel {
   }
 
   isLoaded() {
-    console.log('isLoaded', window.clickforce_rtid);
+    // console.log('isLoaded', window.clickforce_rtid);
     return window.clickforce_rtid ? true : false;
   }
 
   isReady() {
-    console.log('isReady', window.clickforce_rtid);
+    // console.log('isReady', window.clickforce_rtid);
     return window.clickforce_rtid ? true : false;
   }
 

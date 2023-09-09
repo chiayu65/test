@@ -71,13 +71,23 @@ class GA4Pixel {
         else if (name == 'contents') {
           let items = [];
           for(var i=0; i<props[name].length; i++) {
-            items.push({
-              item_id: props[name][i]['id'],
-              item_name: props[name][i]['name'],
-              item_category: props[name][i]['category'],
-              price: props[name][i]['value'],
-              quantity: props[name][i]['quantity']
-            });
+            var item = {},
+                newName;
+            for(var key in props[name][i]) {
+              newName = this.renameProperty(key);
+              item[newName] = props[name][i][key];
+            }
+
+            item['index'] = i;
+            // items.push({
+            //   item_id: props[name][i]['id'],
+            //   item_name: props[name][i]['name'],
+            //   item_category: props[name][i]['category'],
+            //   price: props[name][i]['value'],
+            //   quantity: props[name][i]['quantity']
+            // });
+
+            items.push(item);
           }
           payload['items'] = items;
         } else {
@@ -88,15 +98,16 @@ class GA4Pixel {
       // set value
       payload['value'] = props['value'] ? props['value'] : 0;
       payload['currency'] = props['currency'] ? props['currency'] : 'TWD';
-      payload['items'] = [
-        {
-          item_id: props['id'],
-          item_name: props['name'],
-          item_category: props['category'],
-          price: props['value'],
-          quantity: props['quantity']
-        }
-      ];
+
+      var item = {},
+          newName;
+      for(var name in props) {
+        newName = this.renameProperty(name);
+        item[newName] = props[name];
+      }
+      item['index'] = 0;
+
+      payload['items'] = [item];
     } else {
       if (event == 'Search')
         payload['search_string'] = props.keyword;
@@ -147,6 +158,25 @@ class GA4Pixel {
     }
 
     return false;
+  }
+
+  renameProperty(name) {
+    var newName = '';
+    switch(name) {
+      case 'id':
+      case 'name':
+      case 'category':
+        newName = 'item_' + name;
+        break;
+      case 'value':
+        newName = 'price';
+        break;
+      default:
+        newName = name;
+        break;
+    }
+
+    return newName;
   }
 
   isLoaded() {
