@@ -44,6 +44,7 @@ class CyntelliPixel {
     img.width = 1;
     img.height =1;
     img.style = 'display:none';
+    img.alt = '';
     img.src = url;
     window.document.body.appendChild(img);
   }
@@ -57,7 +58,7 @@ class CyntelliPixel {
     const pageProperties = this.buildParams('pi', msg.page_properties);
     const newIds = this.buildParams('i', msg.identities);
     let name = 'p';
-    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(msg.event))
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout|AddToWishlist$/.test(msg.event))
         name = 'ec';
 
     const properties = this.buildParams(name, msg.properties);
@@ -112,6 +113,7 @@ class CyntelliPixel {
     img.width = 1;
     img.height =1;
     img.style = 'display:none';
+    img.alt = '';
     img.src = url;
     window.document.body.appendChild(img);
   }

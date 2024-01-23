@@ -84,7 +84,7 @@ class FacebookPixel {
 
     let options = {eventID: msg.messageId};
     let payload;
-    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout|AddToWishlist$/.test(event)) {
       if (/Purchase|InitiateCheckout|AddPaymentInfo/.test(event) == false) {
         const qty = parseInt(props.quantity || 1);
         const value = parseInt(props.value || 1);

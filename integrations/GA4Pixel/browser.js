@@ -94,7 +94,7 @@ class GA4Pixel {
           payload[name] = props[name];
         }
       }
-    } else if (/^AddToCart|ViewContent$/.test(event) || /^add_to_cart|view_item$/.test(cvEvent)) {
+    } else if (/^AddToCart|ViewContent|AddToWishlist$/.test(event) || /^add_to_cart|view_item|add_to_wishlist$/.test(cvEvent)) {
       // set value
       payload['value'] = props['value'] ? props['value'] : 0;
       payload['currency'] = props['currency'] ? props['currency'] : 'TWD';

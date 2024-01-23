@@ -64,7 +64,7 @@ class GoogleAds {
       return;
 
     // prepare payload
-    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout$/.test(event)) {
+    if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout|AddToWishlist$/.test(event)) {
       if (/InitiateCheckout|AddPaymentInfo|Purchase/.test(event) != false) {
         for(var name in props) {
           if (name == 'contents')
