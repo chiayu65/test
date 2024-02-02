@@ -175,9 +175,10 @@ function handleError(error, analyticsInstance) {
 
 function getDefaultPageProperties() {
   const canonicalUrl = getCanonicalUrl();
-  const path = canonicalUrl
-    ? parse(canonicalUrl).pathname
-    : window.location.pathname;
+  // const path = canonicalUrl
+  //   ? parse(canonicalUrl).pathname
+  //   : window.location.pathname;
+  const path = window.location.pathname;
   const { referrer } = document;
   const { search } = window.location;
   const { title } = document;
@@ -194,11 +195,12 @@ function getDefaultPageProperties() {
 
 function getUrl(search) {
   const canonicalUrl = getCanonicalUrl();
-  const url = canonicalUrl
-    ? canonicalUrl.indexOf("?") > -1
-      ? canonicalUrl
-      : canonicalUrl + search
-    : window.location.href;
+  // const url = canonicalUrl
+  //   ? canonicalUrl.indexOf("?") > -1
+  //     ? canonicalUrl
+  //     : canonicalUrl + search
+  //   : window.location.href;
+  const url = window.location.href;
   const hashIndex = url.indexOf("#");
   return hashIndex > -1 ? url.slice(0, hashIndex) : url;
 }

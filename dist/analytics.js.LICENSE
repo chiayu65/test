@@ -179,6 +179,18 @@
 /* 6 */
 
 /**
+ * Deeply clone an object.
+ *
+ * @param {*} obj Any object.
+ */
+
+// string, number, boolean, etc.
+
+// from millermedeiros/amd-utils - MIT
+
+/* 7 */
+
+/**
  * Parse the given `url`.
  *
  * @param {String} str
@@ -217,18 +229,6 @@
  * @return {Boolean}
  * @api public
  */
-
-/* 7 */
-
-/**
- * Deeply clone an object.
- *
- * @param {*} obj Any object.
- */
-
-// string, number, boolean, etc.
-
-// from millermedeiros/amd-utils - MIT
 
 /* 8 */
 
@@ -1271,6 +1271,22 @@
  */
 
 // logger.error("[Util] handleError:: ", e);
+
+// const path = canonicalUrl
+
+//   ? parse(canonicalUrl).pathname
+
+//   : window.location.pathname;
+
+// const url = canonicalUrl
+
+//   ? canonicalUrl.indexOf("?") > -1
+
+//     ? canonicalUrl
+
+//     : canonicalUrl + search
+
+//   : window.location.href;
 
 /**
  *
