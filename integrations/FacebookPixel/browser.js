@@ -87,7 +87,7 @@ class FacebookPixel {
     if (/^AddToCart|ViewContent|Purchase|AddPaymentInfo|InitiateCheckout|AddToWishlist$/.test(event)) {
       if (/Purchase|InitiateCheckout|AddPaymentInfo/.test(event) == false) {
         const qty = parseInt(props.quantity || 1);
-        const value = parseInt(props.value || 1);
+        const value = parseFloat(props.value || 1);
         const currency = props.currency || 'TWD';
         payload = {value: qty*value, contents: [props], currency: currency};
       } else {
